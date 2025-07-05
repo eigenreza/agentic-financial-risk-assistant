@@ -7,8 +7,8 @@
 - [x] Create TODO.md
 - [x] Create data/README.md
 - [x] Add first sample dataset (all five synthetic CSVs)
-- [ ] Build risk analytics engine
-- [ ] Add risk analytics tests
+- [x] Build risk analytics engine
+- [x] Add risk analytics tests
 
 ## Execution Block 2 — App, agent, and MCP
 - [ ] Build Streamlit interface
