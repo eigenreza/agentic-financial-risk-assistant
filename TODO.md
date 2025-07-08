@@ -11,7 +11,7 @@
 - [x] Add risk analytics tests
 
 ## Execution Block 2 — App, agent, and MCP
-- [ ] Build Streamlit interface
+- [x] Build Streamlit interface
 - [ ] Add LangChain tool-calling agent
 - [ ] Add fallback mode
 - [ ] Add minimal MCP-style tool/data access layer
