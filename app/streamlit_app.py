@@ -1,5 +1,11 @@
 """Agentic Financial Risk Assistant — Streamlit application entry point."""
 
+import sys
+from pathlib import Path
+
+# Ensure the project root is on sys.path regardless of how streamlit is invoked.
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 import io
 import streamlit as st
 import pandas as pd
