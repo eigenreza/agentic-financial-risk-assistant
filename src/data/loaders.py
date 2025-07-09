@@ -1,17 +1,22 @@
 """Load and clean financial time-series CSV files."""
 
+import io
 import pandas as pd
 from pathlib import Path
 
 
-def load_csv(path: str | Path, date_col: str = "Date", price_col: str = "Close") -> pd.DataFrame:
+def load_csv(path: str | Path | io.IOBase, date_col: str = "Date", price_col: str = "Close") -> pd.DataFrame:
     """
     Load a CSV, parse dates, validate columns, sort, and return a clean DataFrame
     with exactly two columns: date_col and price_col.
+
+    Accepts a file path (str / Path) or a file-like object (e.g. StringIO from
+    Streamlit's file uploader).
     """
-    path = Path(path)
-    if not path.exists():
-        raise FileNotFoundError(f"CSV not found: {path}")
+    if isinstance(path, (str, Path)):
+        path = Path(path)
+        if not path.exists():
+            raise FileNotFoundError(f"CSV not found: {path}")
 
     df = pd.read_csv(path)
 
