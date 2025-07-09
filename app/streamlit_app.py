@@ -6,7 +6,6 @@ from pathlib import Path
 # Ensure the project root is on sys.path regardless of how streamlit is invoked.
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-import io
 import streamlit as st
 import pandas as pd
 
@@ -49,7 +48,7 @@ if selections["source"] == "upload":
     if selections["uploaded_file"] is not None:
         try:
             df = load_csv(
-                io.StringIO(selections["uploaded_file"].getvalue().decode("utf-8")),
+                selections["uploaded_file"],
                 date_col=selections["date_col"],
                 price_col=selections["price_col"],
             )
