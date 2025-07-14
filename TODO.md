@@ -12,8 +12,8 @@
 
 ## Execution Block 2 — App, agent, and MCP
 - [x] Build Streamlit interface
-- [ ] Add LangChain tool-calling agent
-- [ ] Add fallback mode
+- [x] Add LangChain tool-calling agent
+- [x] Add fallback mode
 - [ ] Add minimal MCP-style tool/data access layer
 - [ ] Add MCP architecture documentation
 
