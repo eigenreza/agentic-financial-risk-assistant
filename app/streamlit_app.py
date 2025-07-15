@@ -22,6 +22,7 @@ from src.data.loaders import load_csv
 from src.data.validators import validate
 from src.data.sample_data import load_sample, get_label
 from src.agent.langchain_agent import run_agent, api_key_available
+from src.agent.tools import set_context
 from src.agent.prompts import FALLBACK_MESSAGE
 
 st.set_page_config(
@@ -84,6 +85,10 @@ if df is not None:
     confidence = selections["confidence"]
     window = selections["rolling_window"]
     analyses = selections["analyses"]
+
+    # Push current dataset into the agent tool context on every rerun so the
+    # module-level _prices in tools.py is always fresh when the agent runs.
+    set_context(df[price_col], dataset_label, confidence, window)
 
     # Risk summary
     render_risk_summary(
