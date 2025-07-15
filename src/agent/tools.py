@@ -28,6 +28,10 @@ def set_context(prices: pd.Series, label: str, confidence: float = 0.95, window:
 
 
 def _require_prices() -> pd.Series:
+    # DEBUG — remove after confirming context is wired correctly
+    print(f"DEBUG _require_prices: _prices is None={_prices is None}, "
+          f"module id={id(__import__('src.agent.tools', fromlist=['_prices']))}, "
+          f"len={len(_prices) if _prices is not None else 'n/a'}")
     if _prices is None:
         raise ValueError("No dataset loaded. Upload or select a dataset first.")
     return _prices
