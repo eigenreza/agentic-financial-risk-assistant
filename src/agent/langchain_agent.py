@@ -25,7 +25,7 @@ def _build_agent():
     from langchain_core.prompts import ChatPromptTemplate
 
     llm = ChatAnthropic(
-        model="claude-3-5-haiku-latest",
+        model="claude-haiku-4-5",
         temperature=0,
         max_tokens=2048,
     )
