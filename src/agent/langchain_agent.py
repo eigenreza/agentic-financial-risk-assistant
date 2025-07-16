@@ -81,7 +81,13 @@ def run_agent(
 
     try:
         executor = _build_agent()
-        result = executor.invoke({"input": question})
+        # Prepend dataset context so the model knows what data is loaded
+        # without relying solely on the system prompt.
+        augmented_input = (
+            f"Dataset loaded: {dataset_label} ({len(prices):,} observations).\n\n"
+            f"Question: {question}"
+        )
+        result = executor.invoke({"input": augmented_input})
         raw_output = result.get("output", "")
         print(f"DEBUG run_agent: raw output type={type(raw_output)}, value={repr(raw_output)[:200]}")
 
