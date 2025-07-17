@@ -60,14 +60,6 @@ def run_agent(
     global last_tool_calls
     last_tool_calls = []
 
-    # DEBUG — remove after confirming context is wired correctly
-    import src.agent.tools as _tools_mod
-    print(f"DEBUG run_agent: prices arg type={type(prices)}, "
-          f"prices is None={prices is None}, "
-          f"len={len(prices) if prices is not None else 'n/a'}")
-    print(f"DEBUG run_agent: tools._prices is None={_tools_mod._prices is None}, "
-          f"tools._prices len={len(_tools_mod._prices) if _tools_mod._prices is not None else 'n/a'}")
-
     if prices is None or len(prices) == 0:
         return {
             "answer": NO_DATA_MESSAGE,
@@ -77,7 +69,6 @@ def run_agent(
         }
 
     set_context(prices, dataset_label, confidence, rolling_window)
-    print(f"DEBUG run_agent: after set_context tools._prices is None={_tools_mod._prices is None}")
 
     try:
         executor = _build_agent()
@@ -89,7 +80,6 @@ def run_agent(
         )
         result = executor.invoke({"input": augmented_input})
         raw_output = result.get("output", "")
-        print(f"DEBUG run_agent: raw output type={type(raw_output)}, value={repr(raw_output)[:200]}")
 
         # LangChain-Anthropic may return a list of content blocks — flatten to plain text
         if isinstance(raw_output, list):
