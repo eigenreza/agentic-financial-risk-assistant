@@ -14,8 +14,8 @@
 - [x] Build Streamlit interface
 - [x] Add LangChain tool-calling agent
 - [x] Add fallback mode
-- [ ] Add minimal MCP-style tool/data access layer
-- [ ] Add MCP architecture documentation
+- [x] Add minimal MCP-style tool/data access layer
+- [x] Add MCP architecture documentation
 
 ## Execution Block 3 — RAG, safety, EU AI Act mapping
 - [ ] Add methodology documents
