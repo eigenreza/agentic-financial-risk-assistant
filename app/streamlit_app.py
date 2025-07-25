@@ -157,16 +157,30 @@ if df is not None:
             st.markdown("#### Answer")
             st.markdown(response["answer"])
 
-            col1, col2 = st.columns(2)
+            col1, col2, col3 = st.columns(3)
             with col1:
                 st.markdown("**Basis of answer**")
                 st.info(response["basis"])
             with col2:
                 st.markdown("**Tools called**")
-                if response["tool_calls"]:
-                    st.info(", ".join(response["tool_calls"]))
-                else:
-                    st.info("No tools called")
+                st.info(", ".join(response["tool_calls"]) if response["tool_calls"] else "None")
+            with col3:
+                st.markdown("**Documents retrieved**")
+                st.info(", ".join(response.get("rag_sources", [])) or "None")
+
+            if response.get("rag_chunks"):
+                with st.expander("Retrieved document excerpts"):
+                    source_labels = {
+                        "data_readme":      "Data Source Documentation",
+                        "risk_methodology": "Risk Methodology",
+                        "responsible_ai":   "Responsible AI Policy",
+                        "mcp_architecture": "MCP Architecture",
+                        "eu_ai_act_mapping":"EU AI Act Mapping",
+                    }
+                    for chunk in response["rag_chunks"]:
+                        label = source_labels.get(chunk["source"], chunk["source"])
+                        st.caption(f"**{label}** (score: {chunk['score']:.2f})")
+                        st.markdown(f"> {chunk['text'][:400]}{'...' if len(chunk['text']) > 400 else ''}")
 
             if response.get("error"):
                 st.error(f"Agent error: {response['error']}")

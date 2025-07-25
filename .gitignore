@@ -42,10 +42,11 @@ Thumbs.db
 htmlcov/
 coverage.xml
 
-# FAISS index (regenerated from docs)
+# FAISS index (regenerated from docs at runtime)
 *.faiss
 *.pkl
 faiss_index/
+data/processed/
 
 # Logs
 *.log

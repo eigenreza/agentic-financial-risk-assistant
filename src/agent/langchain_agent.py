@@ -1,7 +1,6 @@
 """LangChain tool-calling agent for financial risk analysis."""
 
 import os
-import json
 import logging
 import pandas as pd
 
@@ -10,8 +9,23 @@ from src.agent.tools import set_context, get_all_tools
 
 logger = logging.getLogger(__name__)
 
-# Populated by the agent after each run for display in the UI
-last_tool_calls: list[dict] = []
+last_tool_calls: list[str] = []
+
+# Keywords that suggest a methodology/data-source question suitable for RAG
+_RAG_KEYWORDS = (
+    "what is", "how is", "how does", "explain", "define", "definition",
+    "methodology", "formula", "calculation", "method", "approach",
+    "where did", "data source", "data come from", "dataset", "sample",
+    "safety", "rule", "policy", "limitation", "limitation",
+    "mcp", "architecture", "responsible", "eu ai", "act",
+    "expected shortfall", "value-at-risk", "var", "drawdown", "volatility",
+    "return", "log return",
+)
+
+
+def _is_rag_question(question: str) -> bool:
+    q = question.lower()
+    return any(kw in q for kw in _RAG_KEYWORDS)
 
 
 def _has_api_key() -> bool:
@@ -19,16 +33,11 @@ def _has_api_key() -> bool:
 
 
 def _build_agent():
-    """Construct and return a LangChain ReAct agent with the risk tools."""
     from langchain_anthropic import ChatAnthropic
     from langchain.agents import create_tool_calling_agent, AgentExecutor
     from langchain_core.prompts import ChatPromptTemplate
 
-    llm = ChatAnthropic(
-        model="claude-haiku-4-5",
-        temperature=0,
-        max_tokens=2048,
-    )
+    llm = ChatAnthropic(model="claude-haiku-4-5", temperature=0, max_tokens=2048)
 
     prompt = ChatPromptTemplate.from_messages([
         ("system", SYSTEM_PROMPT),
@@ -51,10 +60,12 @@ def run_agent(
     """
     Run the agent on a user question and return a structured response dict:
     {
-        "answer": str,
-        "tool_calls": list[str],
-        "basis": str,          # "calculation" | "fallback" | "no_data"
-        "error": str | None,
+        "answer":      str,
+        "tool_calls":  list[str],
+        "rag_sources": list[str],
+        "rag_chunks":  list[dict],
+        "basis":       str,   # "calculation" | "rag" | "mixed" | "no_data" | "error"
+        "error":       str | None,
     }
     """
     global last_tool_calls
@@ -64,24 +75,40 @@ def run_agent(
         return {
             "answer": NO_DATA_MESSAGE,
             "tool_calls": [],
+            "rag_sources": [],
+            "rag_chunks": [],
             "basis": "no_data",
             "error": None,
         }
 
     set_context(prices, dataset_label, confidence, rolling_window)
 
+    # --- RAG retrieval (runs for methodology/data-source questions) ---
+    rag_context = ""
+    rag_sources: list[str] = []
+    rag_chunks: list[dict] = []
+
+    if _is_rag_question(question):
+        try:
+            from src.rag.retriever import retrieve_with_context
+            rag_result = retrieve_with_context(question)
+            if rag_result["found"]:
+                rag_context = "\n\n" + rag_result["context"]
+                rag_sources = rag_result["sources"]
+                rag_chunks = rag_result["chunks"]
+        except Exception as e:
+            logger.warning("RAG retrieval failed: %s", e)
+
     try:
         executor = _build_agent()
-        # Prepend dataset context so the model knows what data is loaded
-        # without relying solely on the system prompt.
         augmented_input = (
             f"Dataset loaded: {dataset_label} ({len(prices):,} observations).\n\n"
             f"Question: {question}"
+            + rag_context
         )
         result = executor.invoke({"input": augmented_input})
         raw_output = result.get("output", "")
 
-        # LangChain-Anthropic may return a list of content blocks — flatten to plain text
         if isinstance(raw_output, list):
             answer = " ".join(
                 block.get("text", "") if isinstance(block, dict) else str(block)
@@ -90,7 +117,6 @@ def run_agent(
         else:
             answer = str(raw_output).strip()
 
-        # Extract tool names from intermediate steps
         steps = result.get("intermediate_steps", [])
         tool_calls = []
         for step in steps:
@@ -100,10 +126,22 @@ def run_agent(
                     tool_calls.append(action.tool)
 
         last_tool_calls = tool_calls
+
+        if tool_calls and rag_sources:
+            basis = "mixed"
+        elif tool_calls:
+            basis = "calculation"
+        elif rag_sources:
+            basis = "rag"
+        else:
+            basis = "reasoning"
+
         return {
             "answer": answer,
             "tool_calls": tool_calls,
-            "basis": "calculation" if tool_calls else "reasoning",
+            "rag_sources": rag_sources,
+            "rag_chunks": rag_chunks,
+            "basis": basis,
             "error": None,
         }
 
@@ -112,6 +150,8 @@ def run_agent(
         return {
             "answer": f"The agent encountered an error: {e}",
             "tool_calls": [],
+            "rag_sources": [],
+            "rag_chunks": [],
             "basis": "error",
             "error": str(e),
         }

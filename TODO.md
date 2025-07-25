@@ -18,9 +18,9 @@
 - [x] Add MCP architecture documentation
 
 ## Execution Block 3 — RAG, safety, EU AI Act mapping
-- [ ] Add methodology documents
-- [ ] Add RAG retriever
-- [ ] Include data/README.md in RAG source set
+- [x] Add methodology documents
+- [x] Add RAG retriever
+- [x] Include data/README.md in RAG source set
 - [ ] Add safety layer
 - [ ] Add EU AI Act mapping document
 - [ ] Add safety tests
