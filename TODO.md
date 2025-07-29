@@ -21,9 +21,9 @@
 - [x] Add methodology documents
 - [x] Add RAG retriever
 - [x] Include data/README.md in RAG source set
-- [ ] Add safety layer
-- [ ] Add EU AI Act mapping document
-- [ ] Add safety tests
+- [x] Add safety layer
+- [x] Add EU AI Act mapping document
+- [x] Add safety tests
 
 ## Execution Block 4 — Deployment engineering
 - [ ] Add Dockerfile

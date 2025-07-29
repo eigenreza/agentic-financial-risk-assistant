@@ -168,6 +168,21 @@ if df is not None:
                 st.markdown("**Documents retrieved**")
                 st.info(", ".join(response.get("rag_sources", [])) or "None")
 
+            col4, col5, col6 = st.columns(3)
+            with col4:
+                st.markdown("**Risk category**")
+                st.info(response.get("risk_category", "—"))
+            with col5:
+                st.markdown("**EU AI Act tier**")
+                st.info(response.get("eu_ai_act_tier", "—"))
+            with col6:
+                st.markdown("**Human review required**")
+                flag = response.get("human_review_required", False)
+                if flag:
+                    st.warning("Yes")
+                else:
+                    st.info("No")
+
             if response.get("rag_chunks"):
                 with st.expander("Retrieved document excerpts"):
                     source_labels = {

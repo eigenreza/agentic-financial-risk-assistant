@@ -6,6 +6,7 @@ import pandas as pd
 
 from src.agent.prompts import SYSTEM_PROMPT, NO_DATA_MESSAGE
 from src.agent.tools import set_context, get_all_tools
+from src.agent.safety import check, annotate_response
 
 logger = logging.getLogger(__name__)
 
@@ -78,6 +79,26 @@ def run_agent(
             "rag_sources": [],
             "rag_chunks": [],
             "basis": "no_data",
+            "risk_category": "no_data",
+            "human_review_required": False,
+            "eu_ai_act_tier": "",
+            "confidence_note": "",
+            "error": None,
+        }
+
+    # --- Safety check (deterministic — runs before LLM) ---
+    decision = check(question)
+    if not decision.allowed:
+        return {
+            "answer": decision.refusal_reason,
+            "tool_calls": [],
+            "rag_sources": [],
+            "rag_chunks": [],
+            "basis": "blocked",
+            "risk_category": decision.risk_category.value,
+            "human_review_required": False,
+            "eu_ai_act_tier": decision.eu_ai_act_tier,
+            "confidence_note": decision.confidence_note,
             "error": None,
         }
 
@@ -136,7 +157,7 @@ def run_agent(
         else:
             basis = "reasoning"
 
-        return {
+        response = {
             "answer": answer,
             "tool_calls": tool_calls,
             "rag_sources": rag_sources,
@@ -144,6 +165,7 @@ def run_agent(
             "basis": basis,
             "error": None,
         }
+        return annotate_response(response, decision)
 
     except Exception as e:
         logger.error("Agent error: %s", e, exc_info=True)
