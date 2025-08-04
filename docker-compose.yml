@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: agentic-financial-risk-assistant:latest
+    container_name: financial-risk-assistant
+    ports:
+      - "8501:8501"
+    environment:
+      # Pass your API key from the host environment — never hardcode it here
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+    volumes:
+      # Mount data/processed so the FAISS index persists between container restarts
+      - ./data/processed:/app/data/processed
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:8501/_stcore/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped

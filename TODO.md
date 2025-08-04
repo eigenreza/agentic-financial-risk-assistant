@@ -26,8 +26,8 @@
 - [x] Add safety tests
 
 ## Execution Block 4 — Deployment engineering
-- [ ] Add Dockerfile
-- [ ] Add docker-compose.yml
+- [x] Add Dockerfile
+- [x] Add docker-compose.yml
 - [ ] Add Kubernetes manifests
 - [ ] Add Azure deployment docs
 - [ ] Optional: deploy live app to Azure

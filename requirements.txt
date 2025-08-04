@@ -1,6 +1,7 @@
 # Core data science
 pandas==2.2.3
 numpy==1.26.4
+scipy==1.13.1
 
 # Streamlit app
 streamlit==1.45.1
