@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+
+# Virtual environment — never copy into image
+.venv/
+venv/
+env/
+
+# Environment variables — never copy secrets into image
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# Git
+.git/
+.gitignore
+
+# Tests and CI (not needed at runtime)
+tests/
+.github/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# FAISS index — rebuilt at runtime, mounted via volume
+data/processed/
+
+# Notebooks
+notebooks/
+
+# Deployment files — not needed inside app container
+deployment/
+
+# Docs — included selectively; full docs not needed at runtime
+# (docs/ IS copied because RAG reads from it)
+
+# Reports and evaluation
+reports/
+evaluation/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large files
+*.zip
+*.tar.gz
