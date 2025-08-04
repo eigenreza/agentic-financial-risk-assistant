@@ -52,8 +52,7 @@ data/processed/
 *.log
 logs/
 
-# Docker
-.dockerignore
+# Docker — .dockerignore is tracked by git, do not ignore it
 
 # Distribution
 *.tar.gz
