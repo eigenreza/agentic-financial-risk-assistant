@@ -1,0 +1,9 @@
+# Force LF line endings for Docker-related files so Windows git
+# does not convert them to CRLF and break Docker context parsing.
+Dockerfile          text eol=lf
+.dockerignore       text eol=lf
+docker-compose.yml  text eol=lf
+*.sh                text eol=lf
+
+# Everything else: normalise to LF in the repo, checkout as native
+*                   text=auto
