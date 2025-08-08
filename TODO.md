@@ -28,7 +28,7 @@
 ## Execution Block 4 — Deployment engineering
 - [x] Add Dockerfile
 - [x] Add docker-compose.yml
-- [ ] Add Kubernetes manifests
+- [x] Add Kubernetes manifests
 - [ ] Add Azure deployment docs
 - [ ] Optional: deploy live app to Azure
 

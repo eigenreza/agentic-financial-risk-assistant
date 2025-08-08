@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: financial-risk-assistant
+  namespace: default
+  labels:
+    app: financial-risk-assistant
+    version: "1.0"
+    component: streamlit
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: financial-risk-assistant
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0       # zero-downtime rolling update
+  template:
+    metadata:
+      labels:
+        app: financial-risk-assistant
+        version: "1.0"
+    spec:
+      # ── Security context ────────────────────────────────────────────────
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+
+      containers:
+        - name: app
+          # Replace with your registry path, e.g.:
+          #   acrname.azurecr.io/financial-risk-assistant:1.0
+          image: agentic-financial-risk-assistant:latest
+          imagePullPolicy: IfNotPresent  # use Always for registry-hosted images
+
+          ports:
+            - name: http
+              containerPort: 8501
+              protocol: TCP
+
+          # ── Environment variables ──────────────────────────────────────
+          env:
+            - name: STREAMLIT_SERVER_PORT
+              value: "8501"
+            - name: STREAMLIT_SERVER_HEADLESS
+              value: "true"
+            - name: STREAMLIT_BROWSER_GATHER_USAGE_STATS
+              value: "false"
+            # API key injected from a Kubernetes Secret — never hardcoded
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: anthropic-api-key
+                  key: api-key
+                  optional: true   # app runs in fallback mode if secret absent
+
+          # ── Resource limits ────────────────────────────────────────────
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"
+
+          # ── Health probes ──────────────────────────────────────────────
+          livenessProbe:
+            httpGet:
+              path: /_stcore/health
+              port: 8501
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /_stcore/health
+              port: 8501
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            failureThreshold: 3
+
+          # ── Volume mounts ──────────────────────────────────────────────
+          volumeMounts:
+            - name: faiss-index
+              mountPath: /app/data/processed
+              readOnly: false
+
+      # ── Volumes ──────────────────────────────────────────────────────────
+      volumes:
+        - name: faiss-index
+          emptyDir: {}
+          # Production: replace emptyDir with a PersistentVolumeClaim so the
+          # FAISS index survives pod restarts without being rebuilt each time.
+          # Example:
+          #   persistentVolumeClaim:
+          #     claimName: faiss-index-pvc
+
+      # ── Topology spread (optional multi-zone HA) ─────────────────────────
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: financial-risk-assistant

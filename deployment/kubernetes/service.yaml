@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: financial-risk-assistant
+  namespace: default
+  labels:
+    app: financial-risk-assistant
+    component: streamlit
+  annotations:
+    # Uncomment for Azure Load Balancer with a static public IP:
+    # service.beta.kubernetes.io/azure-load-balancer-resource-group: "your-rg"
+spec:
+  type: ClusterIP          # internal only; traffic enters via Ingress
+  selector:
+    app: financial-risk-assistant
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8501     # maps external port 80 to container port 8501
