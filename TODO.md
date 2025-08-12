@@ -29,7 +29,7 @@
 - [x] Add Dockerfile
 - [x] Add docker-compose.yml
 - [x] Add Kubernetes manifests
-- [ ] Add Azure deployment docs
+- [x] Add Azure deployment docs
 - [ ] Optional: deploy live app to Azure
 
 ## Execution Block 5 — CI/CD and polish
