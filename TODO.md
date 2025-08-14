@@ -33,7 +33,7 @@
 - [ ] Optional: deploy live app to Azure
 
 ## Execution Block 5 — CI/CD and polish
-- [ ] Add GitHub Actions
+- [x] Add GitHub Actions
 - [ ] Add architecture docs
 - [ ] Add evaluation framework
 - [ ] Add screenshots
