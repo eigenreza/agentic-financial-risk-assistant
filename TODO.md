@@ -34,7 +34,7 @@
 
 ## Execution Block 5 — CI/CD and polish
 - [x] Add GitHub Actions
-- [ ] Add architecture docs
+- [x] Add architecture docs
 - [ ] Add evaluation framework
 - [ ] Add screenshots
 - [ ] Polish README
