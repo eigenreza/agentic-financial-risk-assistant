@@ -1,11 +1,16 @@
 # Project Log
 
 ## Current phase
-Phase 13 — Evaluation framework, final README, and reports — COMPLETE
+Phase 14 — CV and cover-letter positioning — NEXT
 
 ## Current status
 - Completed:
-  - All phases 1–12 complete
+  - All phases 1–6 + 8–13 complete
+  - Phase 7 (evaluation framework) — completed as part of Phase 13 session:
+    - evaluation/evaluation_questions.csv — 30 questions, 7 columns, all categories
+    - evaluation/evaluation_results.md — 30/30 pass
+    - evaluation/failure_modes.md — 12 failure modes
+    - Note: deliverables were built out-of-order (Phase 13 session) but are fully complete
   - Phase 13:
     - evaluation/evaluation_questions.csv — 30 questions with 7 columns (id, question, expected_behavior, expected_tool, safety_category, expected_risk_tier, expected_tool_access_layer); covers calculation, RAG, safety/refusal, human-review, metadata categories
     - evaluation/evaluation_results.md — full results for all 30 questions; 30/30 pass; summary table by category; observations section
@@ -41,7 +46,8 @@ None
 
 ## Next exact task
 Phase 14 — CV and cover-letter positioning
-Add application positioning notes to reports/ or a separate positioning file
+Create reports/positioning.md with CV bullet, cover-letter paragraph,
+project summary sentence, and interview explanation per project plan Section 14
 
 ## Handoff prompt for next Claude Code session
 Read PROJECT_LOG.md and tell me where we left off. This is the Agentic Financial Risk Assistant project — a production-style agentic AI prototype using Python risk tools, LangChain, MCP-style tool/data access (official mcp SDK), RAG, safety guardrails, EU AI Act risk-tier mapping, Docker, Kubernetes, Azure, and CI/CD. Static CSV-first data approach using Equinor stock, Brent crude, USD/NOK, S&P 500, and VIX. Repo is private until polished. Do not rewrite completed parts unless a test fails. Focus on the next exact task only.
