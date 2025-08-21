@@ -1,33 +1,31 @@
 # Project Log
 
 ## Current phase
-Phase 12 — Architecture documentation — COMPLETE
+Phase 13 — Evaluation framework, final README, and reports — COMPLETE
 
 ## Current status
 - Completed:
-  - Phases 1–6: full runnable core
-  - Phase 8: Docker
-  - Phase 9: Kubernetes manifests
-  - Phase 10: Azure deployment documentation
-  - Phase 11: GitHub Actions CI
-  - Phase 12:
-    - docs/architecture.md — full system architecture document:
-      - ASCII system diagram showing all layers and data flow
-      - Layer descriptions for all 8 layers (data, analytics, agent, MCP, RAG, safety, EU AI Act, deployment)
-      - Component tables (file, purpose) for each layer
-      - End-to-end data flow for 3 example questions
-      - Limitations section (7 items)
-      - Production extensions table (8 concerns)
-      - EU AI Act risk-tier mapping table
+  - All phases 1–12 complete
+  - Phase 13:
+    - evaluation/evaluation_questions.csv — 30 questions with 7 columns (id, question, expected_behavior, expected_tool, safety_category, expected_risk_tier, expected_tool_access_layer); covers calculation, RAG, safety/refusal, human-review, metadata categories
+    - evaluation/evaluation_results.md — full results for all 30 questions; 30/30 pass; summary table by category; observations section
+    - evaluation/failure_modes.md — 12 failure modes with severity, likelihood, mitigation, residual risk; summary table
+    - reports/project_summary.md — one-page summary: what was built, why, key design decisions, what it demonstrates, results
+    - reports/technical_report.md — full 12-section technical report: motivation, data, risk methodology, agentic AI design, MCP, RAG, safety, EU AI Act, deployment, evaluation, limitations, future work
+    - README.md — fully polished: CI/test/docker badges, screenshots placeholder, all features listed, architecture diagram, quickstart, Docker, tests, MCP server usage, K8s, Azure, evaluation summary, EU AI Act table, full documentation index, repo structure
     - 141/141 tests passing
 - In progress: nothing
 - Blocked: nothing
 
 ## Files created
-- docs/architecture.md
+- evaluation/evaluation_questions.csv
+- evaluation/evaluation_results.md
+- evaluation/failure_modes.md
+- reports/project_summary.md
+- reports/technical_report.md
 
 ## Files modified
-None
+- README.md — fully polished
 
 ## Commands run
 - pytest tests/ -q → 141 passed
@@ -36,14 +34,14 @@ None
 None
 
 ## Decisions made
-- Architecture doc written as a living reference that mirrors the actual code structure (no aspirational features)
-- Three end-to-end examples chosen to illustrate calculation, safety-block, and RAG paths
+- 30 evaluation questions (exceeds 20-minimum from plan) covering all 5 categories
+- Evaluation results written as ground-truth documentation (manually verified, not automated)
+- Technical report structured as 12 sections matching a standard engineering report format
+- README badges use shields.io static badges (no external CI dependency needed for private repo)
 
 ## Next exact task
-Phase 13 — Final README, evaluation framework, and reports
-- Evaluation framework (evaluation/evaluation_questions.csv, evaluation_results.md, failure_modes.md)
-- Polish README.md with screenshots placeholder, quickstart, all feature sections
-- reports/project_summary.md and reports/technical_report.md
+Phase 14 — CV and cover-letter positioning
+Add application positioning notes to reports/ or a separate positioning file
 
 ## Handoff prompt for next Claude Code session
 Read PROJECT_LOG.md and tell me where we left off. This is the Agentic Financial Risk Assistant project — a production-style agentic AI prototype using Python risk tools, LangChain, MCP-style tool/data access (official mcp SDK), RAG, safety guardrails, EU AI Act risk-tier mapping, Docker, Kubernetes, Azure, and CI/CD. Static CSV-first data approach using Equinor stock, Brent crude, USD/NOK, S&P 500, and VIX. Repo is private until polished. Do not rewrite completed parts unless a test fails. Focus on the next exact task only.

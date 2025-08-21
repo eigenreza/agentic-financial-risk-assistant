@@ -35,8 +35,8 @@
 ## Execution Block 5 — CI/CD and polish
 - [x] Add GitHub Actions
 - [x] Add architecture docs
-- [ ] Add evaluation framework
+- [x] Add evaluation framework
 - [ ] Add screenshots
-- [ ] Polish README
-- [ ] Write technical report
+- [x] Polish README
+- [x] Write technical report
 - [ ] Prepare CV and cover-letter wording
