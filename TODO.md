@@ -39,4 +39,18 @@
 - [ ] Add screenshots
 - [x] Polish README
 - [x] Write technical report
-- [ ] Prepare CV and cover-letter wording
+- [x] Prepare CV and cover-letter wording
+
+## Publication checklist
+- [x] All secrets removed
+- [x] README polished
+- [x] Docker instructions tested and working
+- [x] 141 tests passing
+- [x] Architecture documentation complete
+- [x] Evaluation framework complete (30/30)
+- [x] Responsible AI documentation complete
+- [x] EU AI Act mapping documented
+- [x] Commit history clean and professional
+- [ ] Screenshots added to docs/screenshots/
+- [ ] README status badge updated to "complete"
+- [ ] Make repository public
