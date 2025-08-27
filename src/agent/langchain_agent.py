@@ -1,6 +1,7 @@
 """LangChain tool-calling agent for financial risk analysis."""
 
 import os
+import time
 import logging
 import pandas as pd
 
@@ -31,6 +32,38 @@ def _is_rag_question(question: str) -> bool:
 
 def _has_api_key() -> bool:
     return bool(os.environ.get("ANTHROPIC_API_KEY", "").strip())
+
+
+_RETRY_ATTEMPTS = 3
+_RETRY_BASE_DELAY = 1.0   # seconds; doubles on each attempt
+
+
+def _invoke_with_retry(executor, input_dict: dict) -> dict:
+    """
+    Invoke the agent executor with exponential backoff on transient
+    APIConnectionError. Other errors (auth, rate-limit, model errors)
+    are re-raised immediately without retrying.
+    """
+    import anthropic
+
+    last_exc: Exception | None = None
+    for attempt in range(1, _RETRY_ATTEMPTS + 1):
+        try:
+            return executor.invoke(input_dict)
+        except anthropic.APIConnectionError as exc:
+            last_exc = exc
+            if attempt == _RETRY_ATTEMPTS:
+                break
+            delay = _RETRY_BASE_DELAY * (2 ** (attempt - 1))
+            logger.warning(
+                "APIConnectionError on attempt %d/%d — retrying in %.1fs: %s",
+                attempt, _RETRY_ATTEMPTS, delay, exc,
+            )
+            time.sleep(delay)
+        except Exception:
+            raise   # non-connection errors: fail immediately
+
+    raise last_exc  # type: ignore[misc]
 
 
 def _build_agent():
@@ -127,7 +160,7 @@ def run_agent(
             f"Question: {question}"
             + rag_context
         )
-        result = executor.invoke({"input": augmented_input})
+        result = _invoke_with_retry(executor, {"input": augmented_input})
         raw_output = result.get("output", "")
 
         if isinstance(raw_output, list):
