@@ -12,7 +12,7 @@ This document maps the system's features and behaviours to the EU AI Act risk-ti
 
 | AI Act risk concept | Project interpretation | Safety control implemented |
 |---|---|---|
-| **Unacceptable risk** | Manipulative or deceptive financial recommendations; unsupported price predictions | Hard refusal in `safety.py` — request blocked before reaching the LLM |
+| **Unacceptable risk** | Manipulative or deceptive financial recommendations; unsupported price predictions | Hard refusal in `safety.py`, request blocked before reaching the LLM |
 | **High-risk-style concern** | User may rely on output for a consequential financial decision (e.g. investing savings) | Human-review flag prepended to answer; warning shown in UI |
 | **Transparency risk** | User may not realise AI is involved in generating the answer | Visible AI disclaimer on every page; basis-of-answer field in every response |
 | **Minimal-risk use** | Educational or statistical analysis of uploaded data; deterministic tool calculation | Allowed with assumptions, limitations, and data source shown |
@@ -25,18 +25,18 @@ The safety layer classifies every user question into one of six categories befor
 
 | Category | Description | Action |
 |---|---|---|
-| `safe_educational` | Questions about methodology, data sources, system design, or responsible AI | Allowed — RAG retrieval triggered |
-| `technical_calculation` | Requests for specific risk metrics (volatility, VaR, drawdown, ES) | Allowed — tool call triggered |
-| `interpretive_risk` | Questions asking for interpretation of risk results | Allowed — answer includes backward-looking caveats |
-| `high_risk_advice` | Direct investment advice ("should I buy/sell?") | **Blocked** — refusal message returned, LLM not called |
-| `unsupported_prediction` | Future price or return predictions | **Blocked** — refusal message returned, LLM not called |
-| `ambiguous_decision` | Questions that may support a consequential financial decision | Allowed — **human-review flag** prepended to answer |
+| `safe_educational` | Questions about methodology, data sources, system design, or responsible AI | Allowed, RAG retrieval triggered |
+| `technical_calculation` | Requests for specific risk metrics (volatility, VaR, drawdown, ES) | Allowed, tool call triggered |
+| `interpretive_risk` | Questions asking for interpretation of risk results | Allowed, answer includes backward-looking caveats |
+| `high_risk_advice` | Direct investment advice ("should I buy/sell?") | **Blocked**, refusal message returned, LLM not called |
+| `unsupported_prediction` | Future price or return predictions | **Blocked**, refusal message returned, LLM not called |
+| `ambiguous_decision` | Questions that may support a consequential financial decision | Allowed, **human-review flag** prepended to answer |
 
 ---
 
 ## Safety controls by tier
 
-### Unacceptable risk — blocked
+### Unacceptable risk, blocked
 
 Questions that request direct investment advice or unsupported predictions are blocked deterministically in Python before the LLM is invoked. The agent returns a structured refusal that:
 
@@ -51,23 +51,23 @@ Example blocked questions:
 - *"Recommend whether to invest"*
 
 Refusal template:
-> *"I cannot provide direct investment advice. I can provide a technical risk analysis of the uploaded data — for example, volatility, drawdown, or Value-at-Risk. For investment decisions, please consult a qualified financial adviser."*
+> *"I cannot provide direct investment advice. I can provide a technical risk analysis of the uploaded data, for example, volatility, drawdown, or Value-at-Risk. For investment decisions, please consult a qualified financial adviser."*
 
-### High-risk-style concern — human-review flag
+### High-risk-style concern, human-review flag
 
 Questions that may support consequential financial decisions receive a human-review flag. The agent still answers but prepends a warning:
 
 > *"⚠️ Human review recommended. This question may involve a consequential financial decision. The output should be reviewed by a qualified professional before being acted upon."*
 
-### Transparency — AI disclosure
+### Transparency, AI disclosure
 
 Every response includes:
 - A visible disclaimer: *"This tool is for technical risk-analysis demonstration only. It does not provide investment advice."*
-- A **basis-of-answer** field: `calculation`, `rag`, `mixed`, or `reasoning` — so the user always knows whether the answer came from a tool, a document, or the LLM
+- A **basis-of-answer** field: `calculation`, `rag`, `mixed`, or `reasoning`, so the user always knows whether the answer came from a tool, a document, or the LLM
 - Tool names called (if any)
 - Document sources retrieved (if any)
 
-### Minimal-risk — allowed with metadata
+### Minimal-risk, allowed with metadata
 
 Technical calculations and educational questions are answered with:
 - The tool used and its inputs
@@ -99,7 +99,7 @@ If no LLM API key is available:
 - The system runs in deterministic mode
 - The full risk dashboard (volatility, drawdown, VaR, ES, charts) remains functional
 - The agent panel is replaced by a clear message explaining how to enable the LLM
-- No safety controls are bypassed — the deterministic risk calculations apply the same limitations
+- No safety controls are bypassed, the deterministic risk calculations apply the same limitations
 
 ---
 

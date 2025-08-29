@@ -1,6 +1,6 @@
 # Kubernetes Deployment
 
-This directory contains Kubernetes manifests for deploying the Agentic Financial Risk Assistant. The manifests are production-ready templates — substitute your container registry, domain name, and namespace before applying.
+This directory contains Kubernetes manifests for deploying the Agentic Financial Risk Assistant. The manifests are production-ready templates, substitute your container registry, domain name, and namespace before applying.
 
 ---
 
@@ -44,8 +44,8 @@ az acr build --registry <acrname> --image financial-risk-assistant:1.0 .
 ### 2. Create the API key Secret
 
 ```bash
-kubectl create secret generic anthropic-api-key \
-  --from-literal=api-key=your_anthropic_api_key_here
+kubectl create secret generic llm-api-key \
+  --from-literal=api-key=your_llm_api_key_here
 ```
 
 The app runs in deterministic fallback mode if this Secret is absent.
@@ -106,7 +106,7 @@ The HPA scales between 2 and 8 replicas based on CPU (target 70%) and memory (ta
 
 ```bash
 kubectl delete -f deployment/kubernetes/
-kubectl delete secret anthropic-api-key
+kubectl delete secret llm-api-key
 ```
 
 ---
@@ -117,7 +117,7 @@ These manifests apply directly to an AKS cluster with no changes. AKS-specific e
 
 | Feature | AKS approach |
 |---|---|
-| Container registry | Azure Container Registry (ACR) — attach to AKS with `az aks update --attach-acr` |
+| Container registry | Azure Container Registry (ACR), attach to AKS with `az aks update --attach-acr` |
 | Ingress | Application Gateway Ingress Controller (AGIC) or nginx on AKS |
 | TLS | cert-manager with Let's Encrypt, or Azure-managed certificates via AGIC |
 | Secrets | Azure Key Vault + Secrets Store CSI Driver (replaces Kubernetes Secret) |
@@ -131,8 +131,8 @@ See `deployment/azure/aks_extension_note.md` for step-by-step AKS deployment ins
 
 ## Production extensions
 
-- **PersistentVolumeClaim for FAISS index** — replace `emptyDir` in `deployment.yaml` with a PVC backed by Azure Files or Azure Disk so the index survives pod restarts without rebuilding
-- **NetworkPolicy** — restrict pod-to-pod traffic to only what is needed
-- **PodDisruptionBudget** — ensure at least 1 pod stays available during node maintenance
-- **Resource quotas** — apply namespace-level quotas to prevent resource starvation
-- **Multi-region deployment** — use Azure Traffic Manager or Azure Front Door to distribute across regions
+- **PersistentVolumeClaim for FAISS index**, replace `emptyDir` in `deployment.yaml` with a PVC backed by Azure Files or Azure Disk so the index survives pod restarts without rebuilding
+- **NetworkPolicy**, restrict pod-to-pod traffic to only what is needed
+- **PodDisruptionBudget**, ensure at least 1 pod stays available during node maintenance
+- **Resource quotas**, apply namespace-level quotas to prevent resource starvation
+- **Multi-region deployment**, use Azure Traffic Manager or Azure Front Door to distribute across regions

@@ -11,7 +11,7 @@ from src.risk.var import historical_var, parametric_var, expected_shortfall
 from src.risk.rolling import rolling_volatility, rolling_var
 
 
-# Module-level price series — set by the agent before each run
+# Module-level price series, set by the agent before each run
 _prices: pd.Series | None = None
 _dataset_label: str = "Unknown dataset"
 _confidence: float = 0.95

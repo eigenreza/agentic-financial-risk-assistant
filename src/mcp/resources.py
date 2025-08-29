@@ -20,11 +20,11 @@ _RESOURCE_REGISTRY: dict[str, Path] = {
 }
 
 _RESOURCE_DESCRIPTIONS: dict[str, str] = {
-    "data_readme":      "Data source documentation — dataset origins, download instructions, cleaning steps",
-    "risk_methodology": "Risk methodology — definitions and formulae for all risk metrics",
-    "responsible_ai":   "Responsible AI policy — safety rules, uncertainty handling, human-review protocol",
-    "mcp_architecture": "MCP architecture — how the tool/data access layer is structured",
-    "eu_ai_act_mapping":"EU AI Act risk-tier mapping — how the system maps to AI governance tiers",
+    "data_readme":      "Data source documentation: dataset origins, download instructions, cleaning steps",
+    "risk_methodology": "Risk methodology: definitions and formulae for all risk metrics",
+    "responsible_ai":   "Responsible AI policy: safety rules, uncertainty handling, human-review protocol",
+    "mcp_architecture": "MCP architecture: how the tool/data access layer is structured",
+    "eu_ai_act_mapping":"EU AI Act risk-tier mapping: how the system maps to AI governance tiers",
 }
 
 

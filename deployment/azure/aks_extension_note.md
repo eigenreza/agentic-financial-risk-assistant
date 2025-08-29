@@ -6,7 +6,7 @@ This document explains how the Kubernetes manifests in `deployment/kubernetes/` 
 
 ## What AKS is
 
-Azure Kubernetes Service (AKS) is Microsoft's managed Kubernetes offering. It handles the Kubernetes control plane (API server, etcd, scheduler) as a fully managed Azure service — you provision and manage only the worker nodes. The Kubernetes manifests in `deployment/kubernetes/` work on AKS without modification.
+Azure Kubernetes Service (AKS) is Microsoft's managed Kubernetes offering. It handles the Kubernetes control plane (API server, etcd, scheduler) as a fully managed Azure service, you provision and manage only the worker nodes. The Kubernetes manifests in `deployment/kubernetes/` work on AKS without modification.
 
 ---
 
@@ -61,8 +61,8 @@ AKS automatically provisions an Azure Load Balancer and assigns a public IP when
 ### 5. Create the API key Secret
 
 ```bash
-kubectl create secret generic anthropic-api-key \
-  --from-literal=api-key=<your-anthropic-api-key>
+kubectl create secret generic llm-api-key \
+  --from-literal=api-key=<your-llm-api-key>
 ```
 
 ### 6. Update image reference in deployment.yaml
@@ -102,7 +102,7 @@ az aks update \
   --attach-acr $ACR_NAME
 ```
 
-Remove `registry-username` / `registry-password` from the deployment — AKS uses its managed identity to pull from ACR automatically.
+Remove `registry-username` / `registry-password` from the deployment, AKS uses its managed identity to pull from ACR automatically.
 
 ### Use Azure Key Vault for secrets (Secrets Store CSI Driver)
 
@@ -132,7 +132,7 @@ az aks enable-addons \
   --addons monitoring
 ```
 
-This streams container logs, pod metrics, and node metrics to Azure Log Analytics — visible in the Azure Portal under the cluster's "Insights" tab.
+This streams container logs, pod metrics, and node metrics to Azure Log Analytics, visible in the Azure Portal under the cluster's "Insights" tab.
 
 ### Enable cluster autoscaler
 
@@ -153,13 +153,13 @@ The cluster autoscaler adds or removes nodes in response to the HPA scaling pods
 
 | Manifest element | AKS equivalent |
 |---|---|
-| `Deployment` + `HPA` | Standard Kubernetes on AKS — no changes needed |
-| `Service` (ClusterIP) | Internal cluster service — no changes needed |
+| `Deployment` + `HPA` | Standard Kubernetes on AKS, no changes needed |
+| `Service` (ClusterIP) | Internal cluster service, no changes needed |
 | `Ingress` (nginx) | Azure Load Balancer + nginx Ingress controller |
-| `ANTHROPIC_API_KEY` Secret | Azure Key Vault via Secrets Store CSI Driver (recommended) or plain Kubernetes Secret |
+| `LLM_API_KEY` Secret | Azure Key Vault via Secrets Store CSI Driver (recommended) or plain Kubernetes Secret |
 | `emptyDir` FAISS volume | Azure Files PVC (persistent) or Azure Disk PVC for single-replica |
 | Image reference | ACR image path: `acrname.azurecr.io/financial-risk-assistant:1.0` |
-| Registry pull | AKS managed identity attached to ACR — no `imagePullSecrets` needed |
+| Registry pull | AKS managed identity attached to ACR, no `imagePullSecrets` needed |
 
 ---
 

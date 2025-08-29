@@ -70,7 +70,7 @@ def render_risk_summary(
 
 **Drawdown:** `(current_price - running_peak) / running_peak`
 
-**Historical VaR ({int(confidence*100)}%):** Empirical quantile of the return distribution — the loss not exceeded on `{int(confidence*100)}%` of trading days
+**Historical VaR ({int(confidence*100)}%):** Empirical quantile of the return distribution: the loss not exceeded on `{int(confidence*100)}%` of trading days
 
 **Parametric VaR ({int(confidence*100)}%):** Gaussian assumption: `-(mean - z * std)` where `z = {confidence:.2f}` quantile
 

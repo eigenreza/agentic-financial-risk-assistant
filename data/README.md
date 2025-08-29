@@ -12,7 +12,7 @@ Real data can be substituted at any time using the download instructions below. 
 
 ## Datasets
 
-### 1. Equinor ASA (EQNR) — Norwegian oil and gas company
+### 1. Equinor ASA (EQNR), Norwegian oil and gas company
 
 | Field | Value |
 |---|---|

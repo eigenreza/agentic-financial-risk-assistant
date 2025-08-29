@@ -32,10 +32,10 @@ The following rules are enforced by the agent's system prompt and safety layer. 
 
 Every agent response includes structured metadata fields:
 
-- **Basis of answer** — `calculation` (tool was called), `reasoning` (LLM reasoning without tool), or `error`
-- **Tools called** — the names of all tools invoked to produce the answer
-- **Confidence level** — the VaR/ES confidence level used (where applicable)
-- **Limitations** — backward-looking caveats, sample-period warnings, and model assumptions
+- **Basis of answer**, `calculation` (tool was called), `reasoning` (LLM reasoning without tool), or `error`
+- **Tools called**, the names of all tools invoked to produce the answer
+- **Confidence level**, the VaR/ES confidence level used (where applicable)
+- **Limitations**, backward-looking caveats, sample-period warnings, and model assumptions
 
 ---
 
@@ -59,7 +59,7 @@ The agent flags a response for human review when the question:
 - Involves regulatory or legal interpretation
 - Falls into an ambiguous risk category where the agent cannot confidently determine the appropriate safety boundary
 
-A human-review flag does not mean the question is refused — it means the answer should be reviewed by a qualified professional before being acted upon.
+A human-review flag does not mean the question is refused, it means the answer should be reviewed by a qualified professional before being acted upon.
 
 ---
 
@@ -81,7 +81,7 @@ See `docs/eu_ai_act_mapping.md` for the full mapping.
 ## 7. Data handling
 
 - The system processes only the data the user uploads or selects. No data is transmitted to external servers beyond the LLM API call.
-- The LLM API receives the user's question and the agent's tool outputs. Raw price series are not sent to the LLM — only the computed statistical results.
+- The LLM API receives the user's question and the agent's tool outputs. Raw price series are not sent to the LLM, only the computed statistical results.
 - No user data is stored between sessions.
 - Synthetic sample data is generated with a fixed random seed (42) for full reproducibility. It does not represent real market data.
 
@@ -93,7 +93,7 @@ This tool has the following known limitations:
 
 1. All risk metrics are backward-looking. They describe past price behaviour, not future risk.
 2. Synthetic sample data does not represent real market conditions.
-3. Single-asset analysis only — no portfolio effects are modelled.
+3. Single-asset analysis only, no portfolio effects are modelled.
 4. The LLM may misinterpret ambiguous questions. Always review tool-call traces.
 5. The system has not been validated for regulated financial use cases.
 6. Model outputs should not be used as the sole basis for any financial decision.

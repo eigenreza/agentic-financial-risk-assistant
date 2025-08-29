@@ -18,7 +18,7 @@ from src.risk.rolling import rolling_volatility, rolling_var, stress_period_flag
 
 
 # ---------------------------------------------------------------------------
-# Input / output types (plain dicts — no external dependency required)
+# Input / output types (plain dicts: no external dependency required)
 # ---------------------------------------------------------------------------
 
 def mcp_calculate_volatility(prices: pd.Series, annualise: bool = True) -> dict:

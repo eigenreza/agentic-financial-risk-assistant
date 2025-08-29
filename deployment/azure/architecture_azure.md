@@ -26,7 +26,7 @@ Container App: financial-risk-assistant
     │       │
     │       └── Safety Layer (src/agent/safety.py)
     │
-    └── Anthropic API (external — claude-haiku-4-5)
+    └── the LLM API (external, the language model)
             │
             └── Called via HTTPS; API key from Azure Key Vault
 ```
@@ -37,7 +37,7 @@ Container App: financial-risk-assistant
 |---|---|
 | Azure Container Apps | Serverless container hosting; built-in HTTPS; scale-to-zero |
 | Azure Container Registry (ACR) | Private container image registry |
-| Azure Key Vault | Secure storage for `ANTHROPIC_API_KEY` |
+| Azure Key Vault | Secure storage for `LLM_API_KEY` |
 | Azure Log Analytics | Container logs and diagnostics (auto-provisioned) |
 
 ---
@@ -72,7 +72,7 @@ Azure Kubernetes Service (AKS)
     │               └── Azure Blob Storage              │
     │                                                    │
     ├── Azure OpenAI (GPT-4o / o1) ◄───────────────────┘
-    │       └── Replaces Anthropic API for enterprise compliance
+    │       └── Replaces the LLM API for enterprise compliance
     │
     ├── Azure Key Vault
     │       └── All secrets via Workload Identity (no env vars in pods)
@@ -95,11 +95,11 @@ In production, the MCP server (`src/mcp/server.py`) would be deployed as a separ
 
 - Risk tools can be updated and redeployed without touching the agent container
 - Multiple agents (e.g. a summary agent, a compliance agent, a risk agent) share one tool server
-- The MCP layer enforces authentication — agents present a service account token, not raw credentials
+- The MCP layer enforces authentication, agents present a service account token, not raw credentials
 
-### Azure OpenAI instead of Anthropic
+### Azure OpenAI instead of the LLM provider
 
-Replacing `langchain-anthropic` with `langchain-openai` and pointing at an Azure OpenAI endpoint requires changing only `_build_agent()` in `langchain_agent.py`:
+Replacing `the LangChain LLM provider package` with `langchain-openai` and pointing at an Azure OpenAI endpoint requires changing only `_build_agent()` in `langchain_agent.py`:
 
 ```python
 from langchain_openai import AzureChatOpenAI
@@ -117,7 +117,7 @@ No other code changes are required. The tool-calling interface is identical.
 Replace the Key Vault env-var pattern with the Secrets Store CSI Driver:
 
 ```yaml
-# In deployment.yaml — replaces secretKeyRef
+# In deployment.yaml, replaces secretKeyRef
 volumes:
   - name: secrets
     csi:
@@ -127,14 +127,14 @@ volumes:
         secretProviderClass: azure-keyvault-provider
 ```
 
-The pod accesses Key Vault using its AKS Workload Identity — no credentials stored anywhere in the cluster.
+The pod accesses Key Vault using its AKS Workload Identity, no credentials stored anywhere in the cluster.
 
 ### Azure AI Search as vector store
 
 Replace FAISS with Azure AI Search for multi-user, persistent, and scalable RAG:
 
 ```python
-# In src/rag/retriever.py — swap the FAISS index for Azure AI Search
+# In src/rag/retriever.py, swap the FAISS index for Azure AI Search
 from langchain_community.vectorstores import AzureSearch
 vector_store = AzureSearch(
     azure_search_endpoint=os.environ["AZURE_SEARCH_ENDPOINT"],

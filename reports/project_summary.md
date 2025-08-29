@@ -3,53 +3,51 @@
 ## Agentic Financial Risk Assistant
 
 **Type:** Production-style portfolio prototype
-**Stack:** Python 3.11 · LangChain · Anthropic claude-haiku-4-5 · MCP SDK · FAISS · Streamlit · Docker · Kubernetes · Azure · GitHub Actions
+**Stack:** Python 3.11, LangChain, the LLM API, MCP SDK, FAISS, Streamlit, Docker, Kubernetes, Azure, GitHub Actions
 **Status:** Complete
 
 ---
 
 ## What was built
 
-A cloud-deployable agentic AI prototype for uncertainty-aware financial risk analysis. The system allows a user to upload or select financial time-series data and ask natural-language questions. Every numerical answer is grounded in a verified Python tool call. Every methodological answer is grounded in a retrieved document. Every output carries explicit assumptions, limitations, and safety metadata.
+A cloud-deployable agentic AI prototype for uncertainty-aware financial risk analysis. The system lets a user upload or select financial time-series data and ask natural-language questions. Every numerical answer comes from a verified Python tool call. Every methodological answer comes from a retrieved document. Every response carries explicit assumptions, limitations, and safety metadata.
 
 ---
 
 ## Why it was built
 
-To demonstrate that prior experience in uncertainty modelling and financial risk analysis can be combined with modern agentic AI engineering — and that the result can be built to production engineering standards: tested, containerised, documented, governed, and deployable.
-
-The project also addresses a real gap in general-purpose LLM usage in finance: LLMs hallucinate numbers, make unsupported predictions, and provide investment advice when they should not. This system shows how to prevent all three through architecture, not just prompting.
+General-purpose LLMs hallucinate numbers, make unsupported predictions, and provide investment advice when they should not. These are architectural problems, not prompt-engineering problems. This project demonstrates how to address all three through system design: by routing every calculation through a tested Python tool, every methodology question through a RAG retriever, and every safety decision through a deterministic Python classifier that runs before the LLM is ever invoked.
 
 ---
 
 ## Key design decisions
 
-**LLM as orchestrator, not calculator.** The model never computes a risk metric. It selects a tool, calls it, receives a structured result, and formats an explanation. This eliminates numerical hallucination by design.
+**LLM as orchestrator, not calculator.** The model never computes a risk metric. It selects a tool, calls it, receives a structured result, and formats an explanation. Numerical hallucination is eliminated by design, not by instruction.
 
-**Deterministic safety before the LLM.** The safety layer is Python keyword matching, not an LLM judgement. Blocked requests never reach the model. This is testable, reproducible, and explainable.
+**Deterministic safety before the LLM.** The safety layer is Python keyword matching. Blocked requests never reach the model. The behaviour is testable, reproducible, and fully explainable.
 
-**MCP as a structured boundary.** The MCP layer separates agent orchestration from tool/data execution. The agent cannot call raw Python functions — only registered, versioned tool wrappers. This makes the system auditable and extensible.
+**MCP as a structured boundary.** The MCP layer separates agent orchestration from tool execution. The agent can only call registered, versioned wrappers -- it cannot touch the underlying risk functions directly. This makes the system auditable and straightforward to extend.
 
-**EU AI Act-inspired governance.** Every response carries a risk-tier label. This demonstrates AI governance awareness and is directly relevant to regulated industry contexts.
+**EU AI Act-inspired governance.** Every response carries a risk-tier label. This is not just a label -- it drives concrete controls: hard refusals for investment advice, human-review flags for consequential questions, and transparent basis-of-answer metadata for every output.
 
 ---
 
-## What it demonstrates for a hiring team
+## Technical competencies demonstrated
 
 | Competency | Evidence |
 |---|---|
-| Agentic AI architecture | LangChain tool-calling agent, MCP layer, RAG, safety layer all integrated and working |
-| Production engineering | 141 tests passing, CI/CD, Docker build confirmed, Kubernetes manifests, Azure deployment docs |
-| Responsible AI | Safety refusals, human-review flagging, EU AI Act mapping, uncertainty language, source attribution |
-| Financial domain knowledge | Volatility, VaR, ES, drawdown, rolling metrics — all correctly implemented and documented |
-| Documentation quality | Architecture doc, methodology doc, responsible AI policy, evaluation report, failure-mode analysis |
+| Agentic AI architecture | LangChain tool-calling agent, MCP layer, RAG, and safety layer all integrated and working end-to-end |
+| Production engineering | 141 tests, CI/CD, confirmed Docker build, Kubernetes manifests, Azure Container Apps documentation |
+| Responsible AI | Deterministic safety refusals, human-review flagging, EU AI Act risk-tier mapping, source-grounded answers |
+| Financial domain knowledge | Volatility, VaR, expected shortfall, drawdown, and rolling metrics all correctly implemented and documented |
+| Documentation quality | Architecture doc, risk methodology, responsible AI policy, evaluation report, and failure-mode analysis |
 
 ---
 
 ## Results
 
-- **141 tests passing** across risk engine, MCP tools, safety layer, EU AI Act mapping, and data validation
-- **30/30 evaluation questions passed** (100% pass rate across calculation, RAG, safety, and metadata categories)
-- **Docker build confirmed** working end-to-end
-- **All safety refusals work correctly** — blocked questions never reach the LLM
-- **RAG retrieves correct sources** — VaR questions retrieve `risk_methodology`, data questions retrieve `data_readme`
+- 141 tests passing across risk engine, MCP tools, safety layer, EU AI Act mapping, and data validation
+- 30/30 evaluation questions passed across calculation, RAG, safety, and metadata categories
+- Docker build confirmed working end-to-end
+- All safety refusals fire correctly and blocked questions never reach the LLM
+- RAG retrieves the correct source document for all methodology and data-source questions

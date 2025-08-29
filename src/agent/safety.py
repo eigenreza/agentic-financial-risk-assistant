@@ -8,7 +8,7 @@ Responsibilities:
   4. Attach safety metadata to every response
 
 This module is called by run_agent() before the LLM is invoked, so safety
-decisions are made deterministically in Python — not by the LLM.
+decisions are made deterministically in Python: not by the LLM.
 """
 
 from __future__ import annotations
@@ -96,18 +96,18 @@ _EDUCATIONAL_PATTERNS = (
 # ---------------------------------------------------------------------------
 
 _EU_AI_ACT_TIERS: dict[RiskCategory, str] = {
-    RiskCategory.SAFE_EDUCATIONAL:       "Minimal risk — educational/statistical analysis",
-    RiskCategory.TECHNICAL_CALCULATION:  "Minimal risk — deterministic tool-based calculation",
-    RiskCategory.INTERPRETIVE_RISK:      "Limited risk — AI-generated interpretation, assumptions stated",
-    RiskCategory.HIGH_RISK_ADVICE:       "Unacceptable risk — direct financial advice, blocked",
-    RiskCategory.UNSUPPORTED_PREDICTION: "Unacceptable risk — unsupported prediction, blocked",
-    RiskCategory.AMBIGUOUS_DECISION:     "High-risk-style concern — human review required",
+    RiskCategory.SAFE_EDUCATIONAL:       "Minimal risk: educational/statistical analysis",
+    RiskCategory.TECHNICAL_CALCULATION:  "Minimal risk: deterministic tool-based calculation",
+    RiskCategory.INTERPRETIVE_RISK:      "Limited risk: AI-generated interpretation, assumptions stated",
+    RiskCategory.HIGH_RISK_ADVICE:       "Unacceptable risk: direct financial advice, blocked",
+    RiskCategory.UNSUPPORTED_PREDICTION: "Unacceptable risk: unsupported prediction, blocked",
+    RiskCategory.AMBIGUOUS_DECISION:     "High-risk-style concern: human review required",
 }
 
 _REFUSAL_TEMPLATES: dict[RiskCategory, str] = {
     RiskCategory.HIGH_RISK_ADVICE: (
         "I cannot provide direct investment advice. "
-        "I can provide a technical risk analysis of the uploaded data — "
+        "I can provide a technical risk analysis of the uploaded data: "
         "for example, volatility, drawdown, or Value-at-Risk. "
         "For investment decisions, please consult a qualified financial adviser."
     ),
@@ -128,8 +128,8 @@ _CONFIDENCE_NOTES: dict[RiskCategory, str] = {
     RiskCategory.SAFE_EDUCATIONAL:      "Answer is grounded in retrieved documentation.",
     RiskCategory.TECHNICAL_CALCULATION: "Answer is based on a verified Python tool calculation.",
     RiskCategory.INTERPRETIVE_RISK:     "Answer involves statistical interpretation. Results are backward-looking.",
-    RiskCategory.HIGH_RISK_ADVICE:      "Request blocked — direct investment advice not provided.",
-    RiskCategory.UNSUPPORTED_PREDICTION:"Request blocked — unsupported predictions not provided.",
+    RiskCategory.HIGH_RISK_ADVICE:      "Request blocked: direct investment advice not provided.",
+    RiskCategory.UNSUPPORTED_PREDICTION:"Request blocked: unsupported predictions not provided.",
     RiskCategory.AMBIGUOUS_DECISION:    "Answer requires human review before being acted upon.",
 }
 

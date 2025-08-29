@@ -35,7 +35,7 @@ This document catalogues known and potential failure modes of the Agentic Financ
 
 ---
 
-## 3. Bad CSV format — data loading failure
+## 3. Bad CSV format, data loading failure
 
 **Severity:** High
 **Likelihood:** Medium (user-uploaded files vary in quality)
@@ -55,7 +55,7 @@ This document catalogues known and potential failure modes of the Agentic Financ
 
 ---
 
-## 5. Financial advice boundary — edge cases
+## 5. Financial advice boundary, edge cases
 
 **Severity:** High
 **Likelihood:** Low
@@ -65,7 +65,7 @@ This document catalogues known and potential failure modes of the Agentic Financ
 
 ---
 
-## 6. Overconfidence — missing uncertainty language
+## 6. Overconfidence, missing uncertainty language
 
 **Severity:** High
 **Likelihood:** Low (by design)
@@ -79,7 +79,7 @@ This document catalogues known and potential failure modes of the Agentic Financ
 
 **Severity:** Medium
 **Likelihood:** Low
-**Description:** The Anthropic API is unreachable or returns an error (rate limit, authentication failure, model unavailability).
+**Description:** The the LLM API is unreachable or returns an error (rate limit, authentication failure, model unavailability).
 **Mitigation:** `run_agent()` catches all exceptions and returns a structured error dict with `basis=error` and the error message. The Streamlit UI displays the error message. The risk dashboard (charts, risk summary, VaR calculations) continues to function in fallback mode.
 **Residual risk:** Repeated API failures degrade the agent experience. Production deployment would benefit from retry logic with exponential backoff.
 
@@ -90,7 +90,7 @@ This document catalogues known and potential failure modes of the Agentic Financ
 **Severity:** Medium
 **Likelihood:** Low
 **Description:** A question is misclassified by the safety layer (e.g. an educational question classified as technical, or a harmful question classified as educational).
-**Mitigation:** The classifier uses priority-ordered rules: hard blocks (investment advice, predictions) are checked first before educational and technical patterns. 73 safety tests cover all category boundaries. The classifier is deterministic Python — no LLM involved.
+**Mitigation:** The classifier uses priority-ordered rules: hard blocks (investment advice, predictions) are checked first before educational and technical patterns. 73 safety tests cover all category boundaries. The classifier is deterministic Python, no LLM involved.
 **Residual risk:** Novel phrasing may fall into the wrong category. Misclassification between `safe_educational` and `technical_calculation` is benign (both are allowed). Misclassification of a harmful question as allowed is the critical case, which is mitigated by the LLM system prompt as a second layer.
 
 ---
@@ -100,12 +100,12 @@ This document catalogues known and potential failure modes of the Agentic Financ
 **Severity:** Medium
 **Likelihood:** Low
 **Description:** The RAG retriever returns no results or irrelevant chunks for a valid methodology question.
-**Mitigation:** `retrieve_with_context()` returns a `found=False` result if no chunks meet the minimum cosine similarity threshold (0.25). The agent falls back to LLM reasoning for that question. The FAISS index is built from the actual documentation files — if a file is empty or missing, `get_available_documents()` excludes it.
+**Mitigation:** `retrieve_with_context()` returns a `found=False` result if no chunks meet the minimum cosine similarity threshold (0.25). The agent falls back to LLM reasoning for that question. The FAISS index is built from the actual documentation files, if a file is empty or missing, `get_available_documents()` excludes it.
 **Residual risk:** If documentation files are sparse, retrieval quality degrades. The minimum score threshold prevents low-quality chunks from being included.
 
 ---
 
-## 10. MCP tool failure — invalid input
+## 10. MCP tool failure, invalid input
 
 **Severity:** Medium
 **Likelihood:** Low
@@ -130,7 +130,7 @@ This document catalogues known and potential failure modes of the Agentic Financ
 **Severity:** Low
 **Likelihood:** Low
 **Description:** The FAISS index on disk reflects an older version of the documentation files.
-**Mitigation:** `rebuild_index()` is available to force a full rebuild. `build_index(force_rebuild=False)` is the default — it rebuilds only if no cached index exists. Adding a hash check of document modification times would improve this.
+**Mitigation:** `rebuild_index()` is available to force a full rebuild. `build_index(force_rebuild=False)` is the default, it rebuilds only if no cached index exists. Adding a hash check of document modification times would improve this.
 **Residual risk:** Manual `rebuild_index()` call required after documentation updates in production.
 
 ---

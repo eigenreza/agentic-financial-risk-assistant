@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# Azure CLI deployment script — Agentic Financial Risk Assistant
+# Azure CLI deployment script, Agentic Financial Risk Assistant
 # Deploys to Azure Container Apps (consumption plan)
 #
 # Usage:
@@ -10,7 +10,7 @@
 # Prerequisites:
 #   - Azure CLI installed and logged in (az login)
 #   - Container Apps extension: az extension add --name containerapp --upgrade
-#   - ANTHROPIC_API_KEY set in environment, or edit the variable below
+#   - LLM_API_KEY set in environment, or edit the variable below
 # =============================================================================
 
 set -euo pipefail
@@ -24,8 +24,8 @@ APP_NAME="financial-risk-assistant"
 IMAGE_TAG="1.0"
 KEY_VAULT_NAME="financial-risk-kv"
 
-# Read API key from environment — never hardcode it here
-: "${ANTHROPIC_API_KEY:?ERROR: ANTHROPIC_API_KEY environment variable is not set}"
+# Read API key from environment, never hardcode it here
+: "${LLM_API_KEY:?ERROR: LLM_API_KEY environment variable is not set}"
 
 echo "=== Azure Financial Risk Assistant Deployment ==="
 echo "Resource group : $RESOURCE_GROUP"
@@ -71,8 +71,8 @@ az keyvault create \
 echo "--- Storing API key in Key Vault ---"
 az keyvault secret set \
   --vault-name "$KEY_VAULT_NAME" \
-  --name "anthropic-api-key" \
-  --value "$ANTHROPIC_API_KEY" \
+  --name "llm-api-key" \
+  --value "$LLM_API_KEY" \
   --output none
 
 echo "API key stored. It will never appear in logs or shell history after this point."
@@ -94,7 +94,7 @@ ACR_PASSWORD=$(az acr credential show \
 
 STORED_API_KEY=$(az keyvault secret show \
   --vault-name "$KEY_VAULT_NAME" \
-  --name "anthropic-api-key" \
+  --name "llm-api-key" \
   --query "value" \
   --output tsv)
 
@@ -113,7 +113,7 @@ az containerapp create \
   --cpu 0.5 \
   --memory 1.0Gi \
   --env-vars \
-      "ANTHROPIC_API_KEY=$STORED_API_KEY" \
+      "LLM_API_KEY=$STORED_API_KEY" \
       "STREAMLIT_SERVER_HEADLESS=true" \
       "STREAMLIT_BROWSER_GATHER_USAGE_STATS=false" \
   --output table

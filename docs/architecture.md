@@ -32,7 +32,7 @@ This document describes all system layers, their responsibilities, and how they 
 ┌──────────────────────┐             ┌─────────────────────────┐
 │  LangChain Agent     │             │  Refusal response        │
 │  (src/agent/)        │             │  (no LLM call made)      │
-│  claude-haiku-4-5    │             └─────────────────────────┘
+│  the language model    │             └─────────────────────────┘
 │  tool-calling ReAct  │
 └──────┬───────────────┘
        │
@@ -114,7 +114,7 @@ This document describes all system layers, their responsibilities, and how they 
 |---|---|---|
 | Tool wrappers | `src/agent/tools.py` | 6 LangChain `@tool` functions wrapping `src/risk/`; structured JSON output with assumptions and limitations |
 | Prompts | `src/agent/prompts.py` | System prompt with explicit data-is-loaded guarantee; answer format rules; fallback/no-data templates |
-| Agent runner | `src/agent/langchain_agent.py` | ReAct agent (claude-haiku-4-5, temp=0); safety check before LLM call; RAG context injection; structured response dict |
+| Agent runner | `src/agent/langchain_agent.py` | ReAct agent (the language model, temp=0); safety check before LLM call; RAG context injection; structured response dict |
 | Safety layer | `src/agent/safety.py` | `classify()` → 6 risk categories; `check()` → `SafetyDecision`; `annotate_response()` adds metadata |
 
 **Response dict fields:** `answer`, `tool_calls`, `rag_sources`, `rag_chunks`, `basis`, `risk_category`, `human_review_required`, `eu_ai_act_tier`, `confidence_note`, `error`.
@@ -170,18 +170,18 @@ This document describes all system layers, their responsibilities, and how they 
 
 **Location:** `src/agent/safety.py`
 
-**Responsibility:** Classify every user question and enforce safety boundaries **before** the LLM is invoked. Safety decisions are deterministic Python — not probabilistic LLM outputs.
+**Responsibility:** Classify every user question and enforce safety boundaries **before** the LLM is invoked. Safety decisions are deterministic Python, not probabilistic LLM outputs.
 
 **Risk categories:**
 
 | Category | Action |
 |---|---|
-| `safe_educational` | Allowed — RAG triggered |
-| `technical_calculation` | Allowed — tool call triggered |
-| `interpretive_risk` | Allowed — backward-looking caveats added |
-| `high_risk_advice` | **Blocked** — refusal returned, LLM not called |
-| `unsupported_prediction` | **Blocked** — refusal returned, LLM not called |
-| `ambiguous_decision` | Allowed — human-review flag prepended to answer |
+| `safe_educational` | Allowed, RAG triggered |
+| `technical_calculation` | Allowed, tool call triggered |
+| `interpretive_risk` | Allowed, backward-looking caveats added |
+| `high_risk_advice` | **Blocked**, refusal returned, LLM not called |
+| `unsupported_prediction` | **Blocked**, refusal returned, LLM not called |
+| `ambiguous_decision` | Allowed, human-review flag prepended to answer |
 
 ---
 
@@ -239,9 +239,9 @@ Every response carries an `eu_ai_act_tier` field:
 ```
 1. Streamlit captures question, calls run_agent()
 2. safety.check() → risk_category=high_risk_advice, allowed=False
-3. run_agent() returns refusal immediately — LLM is never called
+3. run_agent() returns refusal immediately, LLM is never called
 4. Streamlit displays refusal: "I cannot provide direct investment advice..."
-5. eu_ai_act_tier = "Unacceptable risk — direct financial advice, blocked"
+5. eu_ai_act_tier = "Unacceptable risk, direct financial advice, blocked"
 ```
 
 **User asks:** *"What is Expected Shortfall?"*
@@ -264,9 +264,9 @@ Every response carries an `eu_ai_act_tier` field:
 2. **Backward-looking metrics.** All risk metrics describe past behaviour; none predict future outcomes.
 3. **Synthetic sample data.** Does not represent real market conditions. Replace with `yfinance` data for realistic results.
 4. **Single-user Streamlit.** Not designed for concurrent multi-user sessions in its current form.
-5. **Module-level tool context.** `set_context()` uses module-level state — fine for single-user deployment; would need session isolation in a multi-user setup.
+5. **Module-level tool context.** `set_context()` uses module-level state, fine for single-user deployment; would need session isolation in a multi-user setup.
 6. **FAISS on disk.** Suitable for a single-node deployment. Replace with Azure AI Search or Pinecone for multi-node or multi-user RAG.
-7. **LLM dependency.** Agent requires an Anthropic API key. Fallback mode provides deterministic risk calculations but no natural language interface.
+7. **LLM dependency.** Agent requires an LLM API key. Fallback mode provides deterministic risk calculations but no natural language interface.
 
 ---
 
@@ -274,7 +274,7 @@ Every response carries an `eu_ai_act_tier` field:
 
 | Concern | Current approach | Production extension |
 |---|---|---|
-| LLM provider | Anthropic claude-haiku-4-5 | Azure OpenAI (single function change in `_build_agent`) |
+| LLM provider | the LLM provider the language model | Azure OpenAI (single function change in `_build_agent`) |
 | Vector store | FAISS on disk | Azure AI Search / Pinecone |
 | Secrets | Env var / Kubernetes Secret | Azure Key Vault + Workload Identity |
 | Multi-user sessions | Module-level state | Per-request context passing or session isolation |
@@ -282,4 +282,4 @@ Every response carries an `eu_ai_act_tier` field:
 | Data source | Static CSV / yfinance | Live market data API (Bloomberg, Refinitiv) via MCP tool |
 | Authentication | None | Azure AD / Entra ID |
 | Audit logging | Response dict | Append-only audit log per tool call |
-| Model evaluation | Manual spot-checks | Automated eval pipeline (Phase 7) |
+| Model evaluation | Manual spot-checks against question bank | Automated evaluation pipeline run on each release |

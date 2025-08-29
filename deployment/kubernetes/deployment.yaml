@@ -49,11 +49,11 @@ spec:
               value: "true"
             - name: STREAMLIT_BROWSER_GATHER_USAGE_STATS
               value: "false"
-            # API key injected from a Kubernetes Secret — never hardcoded
-            - name: ANTHROPIC_API_KEY
+            # API key injected from a Kubernetes Secret, never hardcoded
+            - name: LLM_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: anthropic-api-key
+                  name: llm-api-key
                   key: api-key
                   optional: true   # app runs in fallback mode if secret absent
 

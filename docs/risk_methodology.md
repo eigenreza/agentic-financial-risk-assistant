@@ -62,7 +62,7 @@ Rolling volatility reveals changes in risk level over time, including stress per
 
 **Limitations:**
 - Volatility is backward-looking. It measures past price variation, not future risk.
-- The square-root-of-time scaling assumes returns are independently and identically distributed — an assumption that breaks down during volatility clustering.
+- The square-root-of-time scaling assumes returns are independently and identically distributed, an assumption that breaks down during volatility clustering.
 - A longer estimation window provides a more stable estimate but is slower to react to regime changes.
 
 ---
@@ -118,7 +118,7 @@ where `z` is the standard normal quantile at the confidence level (e.g. z = 1.64
 
 **Limitations:**
 - Historical VaR assumes future returns follow the same distribution as the sample period. It underestimates risk if the sample period was unusually calm.
-- Parametric VaR assumes normality. Financial returns have fat tails — extreme losses occur more often than the normal distribution predicts.
+- Parametric VaR assumes normality. Financial returns have fat tails, extreme losses occur more often than the normal distribution predicts.
 - Both are one-day, single-asset estimates. They do not account for multi-day holding periods, liquidity risk, or portfolio correlation.
 - VaR does not describe the size of losses beyond the threshold.
 

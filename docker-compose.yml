@@ -10,7 +10,7 @@ services:
     ports:
       - "8501:8501"
     environment:
-      # Pass your API key from the host environment — never hardcode it here
+      # Pass your API key from the host environment, never hardcode it here
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
     volumes:
       # Mount data/processed so the FAISS index persists between container restarts

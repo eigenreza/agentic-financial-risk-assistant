@@ -1,4 +1,4 @@
-"""Agentic Financial Risk Assistant — Streamlit application entry point."""
+"""Agentic Financial Risk Assistant: Streamlit application entry point."""
 
 import sys
 from pathlib import Path
@@ -67,7 +67,7 @@ else:
         try:
             df = load_sample(sample_name)
             dataset_label = get_label(sample_name)
-            source_note = "Synthetic sample data (GBM, seed 42) — see data/README.md"
+            source_note = "Synthetic sample data (GBM, seed 42): see data/README.md"
         except Exception as e:
             st.error(f"Could not load sample: {e}")
 
@@ -124,7 +124,7 @@ if df is not None:
     # Raw data preview
     with st.expander("Raw data preview"):
         st.dataframe(df.head(50), use_container_width=True)
-        st.caption(f"{len(df):,} rows total — showing first 50")
+        st.caption(f"{len(df):,} rows total: showing first 50")
 
     st.markdown("---")
 

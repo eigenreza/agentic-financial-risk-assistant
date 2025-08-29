@@ -32,7 +32,7 @@ ENV STREAMLIT_SERVER_PORT=8501
 ENV STREAMLIT_SERVER_HEADLESS=true
 ENV STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
 
-# API key passed at runtime — never baked into the image
+# API key passed at runtime: never baked into the image
 # docker run -e ANTHROPIC_API_KEY=your_key ...
 ENV ANTHROPIC_API_KEY=""
 

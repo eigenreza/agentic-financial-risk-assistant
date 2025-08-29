@@ -24,7 +24,7 @@ This separation has concrete production benefits:
 ```
 src/mcp/
 ├── __init__.py
-├── server.py      # MCP server stub — registers tools and resources
+├── server.py      # MCP server stub, registers tools and resources
 ├── tools.py       # Structured wrappers around the risk engine
 └── resources.py   # Document resource accessors
 ```
@@ -37,10 +37,10 @@ The layer uses the official [MCP Python SDK](https://github.com/modelcontextprot
 
 Each tool accepts a typed input, calls the corresponding function in `src/risk/`, and returns a structured output dict containing:
 
-- `tool` — tool name and version
-- `inputs` — echoed input parameters
-- `outputs` — computed results with human-readable formatted values
-- `metadata` — assumptions, limitations, and observation count
+- `tool`, tool name and version
+- `inputs`, echoed input parameters
+- `outputs`, computed results with human-readable formatted values
+- `metadata`, assumptions, limitations, and observation count
 
 | Tool name | Underlying function | What it computes |
 |---|---|---|
@@ -70,10 +70,10 @@ Resources provide read access to local documentation. The agent can retrieve met
 
 `src/mcp/server.py` creates an `mcp.server.Server` instance and registers:
 
-1. A `list_tools` handler — returns the tool schemas (name, description, JSON input schema)
-2. A `call_tool` handler — routes calls to the appropriate `src/mcp/tools.py` function
-3. A `list_resources` handler — returns URIs for all registered documents
-4. A `read_resource` handler — reads and returns the content of a named document
+1. A `list_tools` handler, returns the tool schemas (name, description, JSON input schema)
+2. A `call_tool` handler, routes calls to the appropriate `src/mcp/tools.py` function
+3. A `list_resources` handler, returns URIs for all registered documents
+4. A `read_resource` handler, reads and returns the content of a named document
 
 In the current prototype the server loads the Equinor sample dataset as the default price series. In production the client would pass a session identifier or a data reference URI.
 
@@ -117,7 +117,7 @@ python -m src.mcp.server   # runs over stdio
 - A summarisation agent, a compliance agent, and a risk agent can all connect to the same MCP server with their own session contexts.
 
 **Connect to enterprise APIs**
-- The tool handlers in `src/mcp/server.py` can be pointed at live market data APIs, internal risk databases, or Azure-hosted model endpoints rather than local CSV files — without changing the agent layer at all.
+- The tool handlers in `src/mcp/server.py` can be pointed at live market data APIs, internal risk databases, or Azure-hosted model endpoints rather than local CSV files, without changing the agent layer at all.
 
 **Secrets and identity management**
 - The MCP server can enforce authentication (API keys, managed identity) at the boundary, so agents never hold credentials directly.
@@ -127,5 +127,5 @@ python -m src.mcp.server   # runs over stdio
 
 **Azure deployment**
 - The MCP server can be deployed as an Azure Container App, with the Streamlit agent as a separate container. Both connect over a private virtual network.
-- Azure OpenAI can be substituted for the Anthropic LLM by updating only the agent layer.
+- Azure OpenAI can be substituted for the language model by updating only the agent layer.
 - Azure Key Vault provides secrets to the MCP server at runtime.

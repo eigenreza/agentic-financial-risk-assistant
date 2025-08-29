@@ -3,14 +3,13 @@
 ## Agentic Financial Risk Assistant
 
 **Version:** 1.0
-**Date:** 2026-05-31
-**Author:** Portfolio project — eigenreza
+**Date:** 2025-08-29
 
 ---
 
 ## 1. Motivation
 
-General-purpose large language models are not fit for direct use in financial risk analysis. They hallucinate numerical results, provide unsupported investment advice, make predictions without grounding, and do not disclose assumptions or limitations. These are not prompt-engineering failures — they are architectural failures. The solution is to constrain the LLM's role to orchestration only, and to route all computation, retrieval, and safety decisions through purpose-built deterministic layers.
+General-purpose large language models are not fit for direct use in financial risk analysis. They hallucinate numerical results, provide unsupported investment advice, make predictions without grounding, and do not disclose assumptions or limitations. These are not prompt-engineering failures, they are architectural failures. The solution is to constrain the LLM's role to orchestration only, and to route all computation, retrieval, and safety decisions through purpose-built deterministic layers.
 
 This project builds a production-style prototype that demonstrates this architecture. It is grounded in prior research experience in stochastic modelling, uncertainty quantification, and financial risk, and translated into an agentic AI engineering context.
 
@@ -43,8 +42,8 @@ All metrics are computed from daily closing prices using the functions in `src/r
 **Drawdown:** `DD_t = (P_t - max(P_1..P_t)) / max(P_1..P_t)`. Maximum drawdown is `min(DD_t)` over the full period.
 
 **Value-at-Risk:** Two methods implemented:
-- *Historical simulation:* `-percentile(r, (1-confidence)×100)` — no distributional assumption
-- *Parametric Gaussian:* `-(μ - z×σ)` where `z = Φ⁻¹(confidence)` — assumes normality
+- *Historical simulation:* `-percentile(r, (1-confidence)×100)`, no distributional assumption
+- *Parametric Gaussian:* `-(μ - z×σ)` where `z = Φ⁻¹(confidence)`, assumes normality
 
 **Expected Shortfall (CVaR):** Mean of returns in the tail beyond the VaR threshold: `-mean(r | r ≤ -VaR)`. ES is always ≥ VaR and provides a more complete picture of tail risk.
 
@@ -54,7 +53,7 @@ All metrics are computed from daily closing prices using the functions in `src/r
 
 ## 4. Agentic AI design
 
-The agent is a LangChain `create_tool_calling_agent` using `claude-haiku-4-5` at temperature=0. The ReAct pattern is used: the model receives the user question with an explicit dataset context prefix, selects a tool (or retrieves from documents), receives the structured result, and formats the answer.
+The agent is a LangChain `create_tool_calling_agent` using `the language model` at temperature=0. The ReAct pattern is used: the model receives the user question with an explicit dataset context prefix, selects a tool (or retrieves from documents), receives the structured result, and formats the answer.
 
 **Tools:** Six `@tool`-decorated functions in `src/agent/tools.py`. Each calls a function in `src/risk/` and returns a structured JSON dict with `outputs` (computed values) and `metadata` (assumptions, limitations, observation count). The tools access the price series through module-level context set by `set_context()` before each agent run.
 
@@ -73,7 +72,7 @@ The `src/mcp/` layer provides a structured boundary between agent orchestration 
 **Why this matters architecturally:** In production, the MCP server would run as a separate process. The agent connects to it over stdio or SSE. This means:
 - Tools can be updated independently of the agent
 - Multiple agents can share one tool server
-- The agent cannot call arbitrary Python functions — only registered wrappers
+- The agent cannot call arbitrary Python functions, only registered wrappers
 - Every tool call is auditable at the MCP layer
 
 The current prototype runs the MCP server in-process, but the design is production-ready for separation.
@@ -86,7 +85,7 @@ Retrieval-Augmented Generation is used for educational and methodology questions
 
 1. **Ingestion:** Four markdown documents are split into 500-character overlapping chunks (100-char overlap). Each chunk is embedded using `all-MiniLM-L6-v2` (384-dimensional, fast, well-suited for technical passages).
 
-2. **Index:** FAISS `IndexFlatIP` with L2-normalised embeddings — equivalent to cosine similarity. Exact search is appropriate at this scale (54 vectors).
+2. **Index:** FAISS `IndexFlatIP` with L2-normalised embeddings, equivalent to cosine similarity. Exact search is appropriate at this scale (54 vectors).
 
 3. **Retrieval:** `retrieve_with_context()` returns top-3 chunks above a 0.25 cosine similarity threshold. Results include source document name and similarity score.
 
@@ -124,7 +123,7 @@ The system applies an EU AI Act-inspired risk-tier framework documented in `docs
 | Transparency | AI involvement in answer generation | Basis field + visible disclaimer |
 | Minimal risk | Educational analysis; tool-based calculation | Allowed with assumptions |
 
-This framework is not regulatory compliance — it is a demonstration of the kind of governance thinking applicable in regulated industry contexts.
+This framework is not regulatory compliance, it is a demonstration of the kind of governance thinking applicable in regulated industry contexts.
 
 ---
 
@@ -134,9 +133,9 @@ This framework is not regulatory compliance — it is a demonstration of the kin
 
 **Kubernetes:** Deployment (2 replicas, rolling update, resource limits), ClusterIP Service, nginx Ingress (WebSocket support for Streamlit), HPA (2–8 replicas, CPU 70% + memory 80%). Manifests apply to AKS without modification.
 
-**Azure:** Container Apps (preferred — serverless, scale-to-zero, managed TLS). AKS documented as enterprise path. Azure CLI deployment script with `set -euo pipefail`, API key from env only, `az acr build` (no local Docker required).
+**Azure:** Container Apps (preferred, serverless, scale-to-zero, managed TLS). AKS documented as enterprise path. Azure CLI deployment script with `set -euo pipefail`, API key from env only, `az acr build` (no local Docker required).
 
-**CI/CD:** GitHub Actions two-job pipeline — `test` (Python 3.11, pip cache, ruff, pytest) and `docker` (Buildx, no push, GHA layer cache). Docker job runs only when tests pass.
+**CI/CD:** GitHub Actions two-job pipeline, `test` (Python 3.11, pip cache, ruff, pytest) and `docker` (Buildx, no push, GHA layer cache). Docker job runs only when tests pass.
 
 ---
 
@@ -164,7 +163,7 @@ Key observations: tool calls were made for all calculation questions without exc
 3. Gaussian VaR assumption understates fat-tail risk
 4. Module-level tool context requires single-user deployment
 5. FAISS in-process index is not suitable for concurrent multi-user RAG
-6. Safety classifier uses keyword matching — adversarial phrasing may bypass it
+6. Safety classifier uses keyword matching, adversarial phrasing may bypass it
 7. No live market data integration
 
 ---
@@ -173,9 +172,9 @@ Key observations: tool calls were made for all calculation questions without exc
 
 - Replace FAISS with Azure AI Search for persistent, scalable, multi-user RAG
 - Add yfinance live data loader with caching
-- Replace Anthropic API with Azure OpenAI for enterprise compliance
+- Replace the LLM API with Azure OpenAI for enterprise compliance
 - Add session isolation for multi-user deployment
 - Add LangSmith tracing for production observability
 - Extend safety classifier with a fine-tuned intent classifier
 - Add portfolio-level risk analysis (correlation, diversification)
-- Implement Phase 7 automated evaluation pipeline
+- Automate the evaluation pipeline to run against the question bank on each release

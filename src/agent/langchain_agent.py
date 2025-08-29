@@ -31,7 +31,11 @@ def _is_rag_question(question: str) -> bool:
 
 
 def _has_api_key() -> bool:
-    return bool(os.environ.get("ANTHROPIC_API_KEY", "").strip())
+    # Accept LLM_API_KEY (preferred) or ANTHROPIC_API_KEY for backward compatibility
+    return bool(
+        os.environ.get("LLM_API_KEY", "").strip()
+        or os.environ.get("ANTHROPIC_API_KEY", "").strip()
+    )
 
 
 _RETRY_ATTEMPTS = 3
@@ -56,7 +60,7 @@ def _invoke_with_retry(executor, input_dict: dict) -> dict:
                 break
             delay = _RETRY_BASE_DELAY * (2 ** (attempt - 1))
             logger.warning(
-                "APIConnectionError on attempt %d/%d — retrying in %.1fs: %s",
+                "APIConnectionError on attempt %d/%d: retrying in %.1fs: %s",
                 attempt, _RETRY_ATTEMPTS, delay, exc,
             )
             time.sleep(delay)
@@ -71,7 +75,17 @@ def _build_agent():
     from langchain.agents import create_tool_calling_agent, AgentExecutor
     from langchain_core.prompts import ChatPromptTemplate
 
-    llm = ChatAnthropic(model="claude-haiku-4-5", temperature=0, max_tokens=2048)
+    # Resolve API key from LLM_API_KEY (preferred) or ANTHROPIC_API_KEY
+    api_key = (
+        os.environ.get("LLM_API_KEY", "").strip()
+        or os.environ.get("ANTHROPIC_API_KEY", "").strip()
+    )
+    llm = ChatAnthropic(
+        model="claude-haiku-4-5",
+        api_key=api_key,
+        temperature=0,
+        max_tokens=2048,
+    )
 
     prompt = ChatPromptTemplate.from_messages([
         ("system", SYSTEM_PROMPT),
@@ -119,7 +133,7 @@ def run_agent(
             "error": None,
         }
 
-    # --- Safety check (deterministic — runs before LLM) ---
+    # --- Safety check (deterministic: runs before LLM) ---
     decision = check(question)
     if not decision.allowed:
         return {

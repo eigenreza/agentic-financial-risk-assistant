@@ -5,7 +5,7 @@ from src.agent.safety import classify, check, RiskCategory
 
 
 # ---------------------------------------------------------------------------
-# Tier: Unacceptable risk — must be blocked
+# Tier: Unacceptable risk: must be blocked
 # ---------------------------------------------------------------------------
 
 class TestUnacceptableRisk:
@@ -47,7 +47,7 @@ class TestUnacceptableRisk:
 
 
 # ---------------------------------------------------------------------------
-# Tier: High-risk-style concern — allowed with human-review flag
+# Tier: High-risk-style concern: allowed with human-review flag
 # ---------------------------------------------------------------------------
 
 class TestHighRiskConcern:
@@ -71,7 +71,7 @@ class TestHighRiskConcern:
 
 
 # ---------------------------------------------------------------------------
-# Tier: Transparency — AI involvement disclosed (structural, not in safety.py)
+# Tier: Transparency: AI involvement disclosed (structural, not in safety.py)
 # ---------------------------------------------------------------------------
 
 class TestTransparencyTier:
@@ -100,7 +100,7 @@ class TestTransparencyTier:
 
 
 # ---------------------------------------------------------------------------
-# Tier: Minimal risk — allowed without additional controls
+# Tier: Minimal risk: allowed without additional controls
 # ---------------------------------------------------------------------------
 
 class TestMinimalRisk:

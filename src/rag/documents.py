@@ -14,22 +14,22 @@ RAG_DOCUMENTS: list[tuple[str, Path, str]] = [
     (
         "data_readme",
         _PROJECT_ROOT / "data" / "README.md",
-        "Data source documentation — dataset origins, columns, download instructions",
+        "Data source documentation: dataset origins, columns, download instructions",
     ),
     (
         "risk_methodology",
         _PROJECT_ROOT / "docs" / "risk_methodology.md",
-        "Risk methodology — formulae and definitions for all risk metrics",
+        "Risk methodology: formulae and definitions for all risk metrics",
     ),
     (
         "responsible_ai",
         _PROJECT_ROOT / "docs" / "responsible_ai.md",
-        "Responsible AI policy — safety rules, human-review protocol, limitations",
+        "Responsible AI policy: safety rules, human-review protocol, limitations",
     ),
     (
         "mcp_architecture",
         _PROJECT_ROOT / "docs" / "mcp_architecture.md",
-        "MCP architecture — tool/data access layer design and production extensions",
+        "MCP architecture: tool/data access layer design and production extensions",
     ),
 ]
 

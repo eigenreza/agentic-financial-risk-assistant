@@ -1,6 +1,6 @@
 # Azure Container Apps Deployment
 
-This document describes how to deploy the Agentic Financial Risk Assistant to Azure Container Apps — the preferred Azure deployment path for this project. Container Apps provides serverless container hosting with built-in scaling, HTTPS, and managed identity support without requiring you to manage Kubernetes nodes directly.
+This document describes how to deploy the Agentic Financial Risk Assistant to Azure Container Apps, the preferred Azure deployment path for this project. Container Apps provides serverless container hosting with built-in scaling, HTTPS, and managed identity support without requiring you to manage Kubernetes nodes directly.
 
 ---
 
@@ -11,7 +11,7 @@ This document describes how to deploy the Agentic Financial Risk Assistant to Az
 | Azure Container Registry (ACR) | Store and serve the container image |
 | Azure Container Apps Environment | Managed Kubernetes-based runtime for containers |
 | Azure Container App | The running instance of the Streamlit application |
-| Azure Key Vault | Store the `ANTHROPIC_API_KEY` secret securely |
+| Azure Key Vault | Store the `LLM_API_KEY` secret securely |
 | Azure Log Analytics Workspace | Container logs and monitoring (created automatically) |
 
 **Estimated cost (consumption plan, low traffic):** < $10/month. Scale to zero when idle. Always use `az group delete` to clean up when done.
@@ -83,8 +83,8 @@ az keyvault create \
 
 az keyvault secret set \
   --vault-name $KEY_VAULT_NAME \
-  --name anthropic-api-key \
-  --value "<your-anthropic-api-key>"
+  --name llm-api-key \
+  --value "<your-llm-api-key>"
 ```
 
 ### 5. Create Container Apps environment
@@ -100,7 +100,7 @@ az containerapp env create \
 
 ```bash
 ACR_PASSWORD=$(az acr credential show --name $ACR_NAME --query passwords[0].value -o tsv)
-API_KEY=$(az keyvault secret show --vault-name $KEY_VAULT_NAME --name anthropic-api-key --query value -o tsv)
+API_KEY=$(az keyvault secret show --vault-name $KEY_VAULT_NAME --name llm-api-key --query value -o tsv)
 
 az containerapp create \
   --name $APP_NAME \
@@ -117,7 +117,7 @@ az containerapp create \
   --cpu 0.5 \
   --memory 1.0Gi \
   --env-vars \
-      ANTHROPIC_API_KEY="$API_KEY" \
+      LLM_API_KEY="$API_KEY" \
       STREAMLIT_SERVER_HEADLESS=true \
       STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
 ```
@@ -140,9 +140,9 @@ The app will be available at `https://<fqdn>` with a free Azure-managed TLS cert
 
 The deployment above uses the consumption plan with:
 
-- **Min replicas: 0** — scales to zero when idle (no traffic = no cost)
-- **Max replicas: 3** — scales up under load
-- **CPU: 0.5 vCPU, Memory: 1 Gi** — sufficient for the Streamlit app with FAISS and sentence-transformers
+- **Min replicas: 0**, scales to zero when idle (no traffic = no cost)
+- **Max replicas: 3**, scales up under load
+- **CPU: 0.5 vCPU, Memory: 1 Gi**, sufficient for the Streamlit app with FAISS and sentence-transformers
 
 To keep the app always warm (avoid cold start):
 
@@ -183,7 +183,7 @@ az containerapp logs show \
 
 ---
 
-## Cleanup — important
+## Cleanup, important
 
 ```bash
 az group delete --name $RESOURCE_GROUP --yes --no-wait

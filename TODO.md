@@ -1,6 +1,6 @@
 # TODO
 
-## Execution Block 1 — Foundation
+## Execution Block 1, Foundation
 - [x] Create private GitHub repository
 - [x] Create repository skeleton
 - [x] Create PROJECT_LOG.md
@@ -10,14 +10,14 @@
 - [x] Build risk analytics engine
 - [x] Add risk analytics tests
 
-## Execution Block 2 — App, agent, and MCP
+## Execution Block 2, App, agent, and MCP
 - [x] Build Streamlit interface
 - [x] Add LangChain tool-calling agent
 - [x] Add fallback mode
 - [x] Add minimal MCP-style tool/data access layer
 - [x] Add MCP architecture documentation
 
-## Execution Block 3 — RAG, safety, EU AI Act mapping
+## Execution Block 3, RAG, safety, EU AI Act mapping
 - [x] Add methodology documents
 - [x] Add RAG retriever
 - [x] Include data/README.md in RAG source set
@@ -25,21 +25,21 @@
 - [x] Add EU AI Act mapping document
 - [x] Add safety tests
 
-## Execution Block 4 — Deployment engineering
+## Execution Block 4, Deployment engineering
 - [x] Add Dockerfile
 - [x] Add docker-compose.yml
 - [x] Add Kubernetes manifests
 - [x] Add Azure deployment docs
 - [ ] Optional: deploy live app to Azure
 
-## Execution Block 5 — CI/CD and polish
+## Execution Block 5, CI/CD and polish
 - [x] Add GitHub Actions
 - [x] Add architecture docs
 - [x] Add evaluation framework
 - [ ] Add screenshots
 - [x] Polish README
 - [x] Write technical report
-- [x] Prepare CV and cover-letter wording
+- [x] Prepare positioning notes
 
 ## Publication checklist
 - [x] All secrets removed

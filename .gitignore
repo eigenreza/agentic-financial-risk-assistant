@@ -17,7 +17,13 @@ venv/
 env/
 ENV/
 
-# Environment variables — never commit secrets
+# Editor and tooling session folders
+.claude/
+
+# Private application notes -- never publish
+reports/positioning.md
+
+# Environment variables -- never commit secrets
 .env
 .env.*
 *.env
@@ -52,7 +58,7 @@ data/processed/
 *.log
 logs/
 
-# Docker — .dockerignore is tracked by git, do not ignore it
+# Docker: .dockerignore is tracked by git, do not ignore it
 
 # Distribution
 *.tar.gz
