@@ -7,6 +7,8 @@ A production-style agentic AI prototype for financial risk and uncertainty analy
 ![Docker](https://img.shields.io/badge/docker-ready-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
+![Demo walkthrough](docs/screenshots/demo.gif)
+
 ---
 
 ## Overview
