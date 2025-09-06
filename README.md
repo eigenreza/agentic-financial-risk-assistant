@@ -9,7 +9,7 @@ A production-style agentic AI prototype for financial risk and uncertainty analy
 
 ## Demo
 
-### 1 — Risk dashboard
+### 1: Risk dashboard
 App loading with Equinor sample data, full risk summary metrics, and all 5 charts (price series, daily returns, rolling volatility, drawdown, VaR).
 
 ![Dashboard](docs/screenshots/demo_01_dashboard.gif)
