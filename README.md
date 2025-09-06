@@ -17,7 +17,7 @@ App loading with Equinor sample data, full risk summary metrics, and all 5 chart
 ### 2 — Tool call: annualised volatility
 Agent answers *"What is the annualised volatility?"* by calling the Python `calculate_volatility` tool and returning a structured result with assumptions and limitations.
 
-![Volatility tool call](docs/screenshots/demo_02_volatility.gif)
+<video src="https://github.com/user-attachments/assets/9e5a99b4-5408-4b21-a1a3-95f0b2c2c73c" controls autoplay loop muted playsinline width="100%"></video>
 
 ### 3 — RAG citation: VaR methodology
 Agent answers *"What is the methodology for VaR?"* by retrieving passages from the risk-methodology documentation via FAISS, with the document source shown. Part 1 of 2.
