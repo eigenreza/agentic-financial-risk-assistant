@@ -9,29 +9,51 @@ A production-style agentic AI prototype for financial risk and uncertainty analy
 
 ## Demo
 
-**1 — Risk dashboard: loading, summary metrics, and all 5 charts**
+### 1 — Risk dashboard
+App loading with Equinor sample data, full risk summary metrics, and all 5 charts (price series, daily returns, rolling volatility, drawdown, VaR).
 
-![Dashboard demo](docs/screenshots/demo_01_dashboard.gif)
+![Dashboard](docs/screenshots/demo_01_dashboard.gif)
 
-**2 — Agent: annualised volatility with tool call trace**
+### 2 — Tool call: annualised volatility
+Agent answers *"What is the annualised volatility?"* by calling the Python `calculate_volatility` tool and returning a structured result with assumptions and limitations.
 
-![Volatility demo](docs/screenshots/demo_02_volatility.gif)
+![Volatility tool call](docs/screenshots/demo_02_volatility.gif)
 
-**3 — Agent: VaR methodology retrieved from documentation (RAG)**
+### 3 — RAG citation: VaR methodology
+Agent answers *"What is the methodology for VaR?"* by retrieving passages from the risk-methodology documentation via FAISS, with the document source shown. Part 1 of 2.
 
-![RAG citation demo](docs/screenshots/demo_03_rag.gif)
+![VaR RAG part 1](docs/screenshots/demo_03_rag_part_a.gif)
 
-**4 — Safety: EU AI Act Unacceptable risk tier refusal**
+Part 2 — retrieved document excerpts expanded.
 
-![Safety refusal demo](docs/screenshots/demo_04_refusal.gif)
+![VaR RAG part 2](docs/screenshots/demo_03_rag_part_b.gif)
 
-**5 — Safety: human review warning for consequential financial question**
+### 4 — EU AI Act refusal: investment advice blocked
+Agent refuses *"Should I buy this stock?"* at the Python safety layer — the LLM is never called. Response labelled EU AI Act Unacceptable risk tier. Part 1 of 2.
 
-![Human review demo](docs/screenshots/demo_05_humanreview.gif)
+![Refusal part 1](docs/screenshots/demo_04_refusal_part_a.gif)
 
-**6 — RAG: data source provenance from data documentation**
+Part 2 — EU AI Act tier and risk category metadata.
 
-![Data source demo](docs/screenshots/demo_06_datasource.gif)
+![Refusal part 2](docs/screenshots/demo_04_refusal_part_b.gif)
+
+### 5 — Human review warning: consequential financial question
+Agent answers *"Is this suitable for my pension?"* and prepends a human-review warning because the question is consequential for financial planning. Part 1 of 2.
+
+![Human review part 1](docs/screenshots/demo_05_humanreview_part_a.gif)
+
+Part 2 — human review flag and EU AI Act tier.
+
+![Human review part 2](docs/screenshots/demo_05_humanreview_part_b.gif)
+
+### 6 — RAG citation: data source provenance
+Agent answers *"Where did the data come from?"* by retrieving the data-source documentation, with the `data_readme` document source cited. Part 1 of 2.
+
+![Data source part 1](docs/screenshots/demo_06_datasource_part_a.gif)
+
+Part 2 — retrieved data documentation excerpt.
+
+![Data source part 2](docs/screenshots/demo_06_datasource_part_b.gif)
 
 ---
 
