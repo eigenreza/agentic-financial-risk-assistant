@@ -12,7 +12,7 @@ A production-style agentic AI prototype for financial risk and uncertainty analy
 ### 1: Risk dashboard
 App loading with Equinor sample data, full risk summary metrics, and all 5 charts (price series, daily returns, rolling volatility, drawdown, VaR).
 
-![Demo 01 – Risk dashboard](docs/screenshots/demo_01_dashboard.gif)
+<video src="https://github.com/user-attachments/assets/e39c496d-73a5-4a63-9f5d-da974ad8a504" controls autoplay loop muted playsinline width="100%"></video>
 
 ### 2 — Tool call: annualised volatility
 Agent answers *"What is the annualised volatility?"* by calling the Python `calculate_volatility` tool and returning a structured result with assumptions and limitations.
