@@ -20,40 +20,24 @@ Agent answers *"What is the annualised volatility?"* by calling the Python `calc
 <video src="https://github.com/user-attachments/assets/9e5a99b4-5408-4b21-a1a3-95f0b2c2c73c" controls autoplay loop muted playsinline width="100%"></video>
 
 ### 3 — RAG citation: VaR methodology
-Agent answers *"What is the methodology for VaR?"* by retrieving passages from the risk-methodology documentation via FAISS, with the document source shown. Part 1 of 2.
+Agent answers *"What is the methodology behind Value at Risk?"* by retrieving passages from the risk-methodology documentation via FAISS, with the document source shown.
 
-![VaR RAG part 1](docs/screenshots/demo_03_rag_part_a.gif)
-
-Part 2 — retrieved document excerpts expanded.
-
-![VaR RAG part 2](docs/screenshots/demo_03_rag_part_b.gif)
+<video src="https://github.com/user-attachments/assets/192a75a8-642f-4474-8576-1c600772f11f" controls autoplay loop muted playsinline width="100%"></video>
 
 ### 4 — EU AI Act refusal: investment advice blocked
-Agent refuses *"Should I buy this stock?"* at the Python safety layer — the LLM is never called. Response labelled EU AI Act Unacceptable risk tier. Part 1 of 2.
+Agent refuses *"Should I buy this stock?"* at the Python safety layer before the LLM is called. Response is labelled EU AI Act Unacceptable risk tier.
 
-![Refusal part 1](docs/screenshots/demo_04_refusal_part_a.gif)
-
-Part 2 — EU AI Act tier and risk category metadata.
-
-![Refusal part 2](docs/screenshots/demo_04_refusal_part_b.gif)
+<video src="https://github.com/user-attachments/assets/6abd0dc3-1603-401f-9bd7-bdc7db8ea578" controls autoplay loop muted playsinline width="100%"></video>
 
 ### 5 — Human review warning: consequential financial question
-Agent answers *"Is this suitable for my pension?"* and prepends a human-review warning because the question is consequential for financial planning. Part 1 of 2.
+Agent answers *"Is this asset suitable for my pension fund?"* and prepends a human-review warning because the question is consequential for financial planning.
 
-![Human review part 1](docs/screenshots/demo_05_humanreview_part_a.gif)
-
-Part 2 — human review flag and EU AI Act tier.
-
-![Human review part 2](docs/screenshots/demo_05_humanreview_part_b.gif)
+<video src="https://github.com/user-attachments/assets/818a6d7d-a2c1-4740-86aa-197db949d58a" controls autoplay loop muted playsinline width="100%"></video>
 
 ### 6 — RAG citation: data source provenance
-Agent answers *"Where did the data come from?"* by retrieving the data-source documentation, with the `data_readme` document source cited. Part 1 of 2.
+Agent answers *"Where does the data come from?"* by retrieving the data-source documentation, with the source document cited.
 
-![Data source part 1](docs/screenshots/demo_06_datasource_part_a.gif)
-
-Part 2 — retrieved data documentation excerpt.
-
-![Data source part 2](docs/screenshots/demo_06_datasource_part_b.gif)
+<video src="https://github.com/user-attachments/assets/3406c4a1-658d-45ae-ab28-268f491183af" controls autoplay loop muted playsinline width="100%"></video>
 
 ---
 
