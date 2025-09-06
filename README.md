@@ -7,7 +7,31 @@ A production-style agentic AI prototype for financial risk and uncertainty analy
 ![Docker](https://img.shields.io/badge/docker-ready-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-![Demo walkthrough](docs/screenshots/demo.gif)
+## Demo
+
+**1 — Risk dashboard: loading, summary metrics, and all 5 charts**
+
+![Dashboard demo](docs/screenshots/demo_01_dashboard.gif)
+
+**2 — Agent: annualised volatility with tool call trace**
+
+![Volatility demo](docs/screenshots/demo_02_volatility.gif)
+
+**3 — Agent: VaR methodology retrieved from documentation (RAG)**
+
+![RAG citation demo](docs/screenshots/demo_03_rag.gif)
+
+**4 — Safety: EU AI Act Unacceptable risk tier refusal**
+
+![Safety refusal demo](docs/screenshots/demo_04_refusal.gif)
+
+**5 — Safety: human review warning for consequential financial question**
+
+![Human review demo](docs/screenshots/demo_05_humanreview.gif)
+
+**6 — RAG: data source provenance from data documentation**
+
+![Data source demo](docs/screenshots/demo_06_datasource.gif)
 
 ---
 
@@ -18,30 +42,6 @@ This project builds on previous research experience in uncertainty modelling and
 The assistant lets a user upload or select financial time-series data and ask natural-language questions: *What is the volatility of this asset? What was the maximum drawdown? What is the Value-at-Risk?* Every answer is grounded in a verified Python tool call, a retrieved methodology document, or both. Nothing is invented by the model.
 
 The LLM acts as an orchestrator, not a calculator. It selects the right tool, receives a structured result, and formats an explanation with explicit assumptions and limitations. Numerical answers always come from tested Python functions. Methodological answers always come from retrieved documents.
-
----
-
-## Screenshots
-
-**Risk dashboard with summary metrics**
-
-![Risk dashboard](docs/screenshots/dashboard_risk_summary_metrics.png)
-
-**Agent answer with tool trace**
-
-![Agent calculation](docs/screenshots/agent_calculation.png)
-
-**Safety refusal for investment advice**
-
-![Safety refusal](docs/screenshots/agent_safety_refusal.png)
-
-**RAG citation from retrieved documentation**
-
-![RAG citation](docs/screenshots/agent_rag_citation.png)
-
-**GitHub Actions CI passing**
-
-![CI passing](docs/screenshots/github_actions_passing.png)
 
 ---
 
