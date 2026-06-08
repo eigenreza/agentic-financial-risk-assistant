@@ -9,32 +9,32 @@ A production-style agentic AI prototype for financial risk and uncertainty analy
 
 ## Demo
 
-### 1: Risk dashboard
+### 1. Risk dashboard
 App loading with Equinor sample data, full risk summary metrics, and all 5 charts (price series, daily returns, rolling volatility, drawdown, VaR).
 
 <video src="https://github.com/user-attachments/assets/e39c496d-73a5-4a63-9f5d-da974ad8a504" controls autoplay loop muted playsinline width="100%"></video>
 
-### 2 — Tool call: annualised volatility
+### 2. Tool call: annualised volatility
 Agent answers *"What is the annualised volatility?"* by calling the Python `calculate_volatility` tool and returning a structured result with assumptions and limitations.
 
 <video src="https://github.com/user-attachments/assets/9e5a99b4-5408-4b21-a1a3-95f0b2c2c73c" controls autoplay loop muted playsinline width="100%"></video>
 
-### 3 — RAG citation: VaR methodology
+### 3. RAG citation: VaR methodology
 Agent answers *"What is the methodology behind Value at Risk?"* by retrieving passages from the risk-methodology documentation via FAISS, with the document source shown.
 
 <video src="https://github.com/user-attachments/assets/192a75a8-642f-4474-8576-1c600772f11f" controls autoplay loop muted playsinline width="100%"></video>
 
-### 4 — EU AI Act refusal: investment advice blocked
+### 4. EU AI Act refusal: investment advice blocked
 Agent refuses *"Should I buy this stock?"* at the Python safety layer before the LLM is called. Response is labelled EU AI Act Unacceptable risk tier.
 
 <video src="https://github.com/user-attachments/assets/6abd0dc3-1603-401f-9bd7-bdc7db8ea578" controls autoplay loop muted playsinline width="100%"></video>
 
-### 5 — Human review warning: consequential financial question
+### 5. Human review warning: consequential financial question
 Agent answers *"Is this asset suitable for my pension fund?"* and prepends a human-review warning because the question is consequential for financial planning.
 
 <video src="https://github.com/user-attachments/assets/818a6d7d-a2c1-4740-86aa-197db949d58a" controls autoplay loop muted playsinline width="100%"></video>
 
-### 6 — RAG citation: data source provenance
+### 6. RAG citation: data source provenance
 Agent answers *"Where does the data come from?"* by retrieving the data-source documentation, with the source document cited.
 
 <video src="https://github.com/user-attachments/assets/3406c4a1-658d-45ae-ab28-268f491183af" controls autoplay loop muted playsinline width="100%"></video>
