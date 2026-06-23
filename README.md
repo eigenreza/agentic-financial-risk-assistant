@@ -190,15 +190,13 @@ See [deployment/kubernetes/README.md](deployment/kubernetes/README.md) for the f
 
 ## Azure deployment
 
-**Container Apps (the recommended path -- serverless, scale to zero, managed TLS):**
+This app is deployed and live on Azure Container Apps, running in fallback mode (no LLM key configured), so the dashboard works fully without any API key:
 
-```bash
-cd deployment/azure
-chmod +x azure_cli_commands.sh
-./azure_cli_commands.sh
-```
+**Live app: https://financial-risk-assistant.salmonsmoke-c7ee3b6a.westeurope.azurecontainerapps.io/**
 
-The script reads your API key from the environment, stores it in Key Vault, builds and pushes the image via `az acr build` (no local Docker required), and deploys to Container Apps. See [deployment/azure/deploy_container_apps.md](deployment/azure/deploy_container_apps.md) for the step-by-step guide and [deployment/azure/aks_extension_note.md](deployment/azure/aks_extension_note.md) for the AKS path.
+The deployment uses the Consumption plan with scale to zero: the app spins down to zero replicas when idle and back up on the next request, so it costs nothing to keep running. The container image is built locally and pushed to Docker Hub, then pulled into a Container Apps environment with 0.5 vCPU and 1Gi of memory, one replica max. No Azure Container Registry is involved, since ACR has no free tier and this setup is meant to stay at zero ongoing cost.
+
+See [deployment/azure/deploy_container_apps.md](deployment/azure/deploy_container_apps.md) for the step-by-step guide, or [deployment/azure/azure_cli_commands.sh](deployment/azure/azure_cli_commands.sh) for the original scripted version (uses Azure Container Registry and an LLM key, useful if you want the agentic mode running instead of fallback mode).
 
 ---
 

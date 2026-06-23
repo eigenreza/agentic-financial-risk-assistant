@@ -2,6 +2,8 @@
 
 This document describes how to deploy the Agentic Financial Risk Assistant to Azure Container Apps, the preferred Azure deployment path for this project. Container Apps provides serverless container hosting with built-in scaling, HTTPS, and managed identity support without requiring you to manage Kubernetes nodes directly.
 
+The live deployment linked from the main README skips the Azure Container Registry and Key Vault steps below to keep cost at exactly zero: the image is built locally and pushed to a public Docker Hub repository instead of ACR, and no LLM key is configured, so the app runs in fallback mode with no secret to store. The steps below cover the fuller path with ACR and an LLM key, useful if you want agentic mode running instead of fallback mode and don't mind the small ACR cost.
+
 ---
 
 ## Required Azure services
