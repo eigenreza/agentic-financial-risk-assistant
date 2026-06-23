@@ -37,6 +37,48 @@ st.markdown(
     "> Uncertainty-aware financial risk analysis using controlled Python tools. "
     "Not investment advice."
 )
+
+with st.expander("What is this and how do I use it?", expanded=True):
+    st.markdown(
+        """
+This is a small risk analysis assistant built around five sample datasets: Equinor stock,
+Brent crude oil, the USD/NOK exchange rate, the S&P 500, and the VIX, all covering 2018
+to 2024. The data here is synthetic, generated from a geometric Brownian motion model with
+a fixed random seed, so the numbers won't match the real market history for these assets,
+but the statistical behaviour (drift, volatility clustering, the shape of the return
+distribution) is realistic enough to demonstrate the analysis properly. If you want to plug
+in real prices instead, the data module supports pulling them from Yahoo Finance.
+
+Pick a dataset from the sidebar and the dashboard fills in straight away with the price
+chart, daily returns, rolling volatility, drawdown, and Value at Risk. From there you can
+ask the agent questions in plain English. It never invents a number: every calculation
+goes through a tested Python function (the same ones backing the charts), and every
+explanation of methodology is pulled from the project's own documentation rather than the
+model's memory.
+
+A few things worth trying:
+
+- *What is the annualised volatility of this asset?*
+- *What was the maximum drawdown and when did it happen?*
+- *What is the 95% Value at Risk?*
+- *Can you walk me through the math behind annualised volatility, with the formula?*
+- *Should I buy this stock?* (the agent will politely refuse, this falls under investment
+  advice and gets blocked before the model is even called)
+
+That fourth question is a good one to try if you're curious about the mechanics. Ask the
+agent to show its work and it will lay out the actual formula, something like
+
+$$\\sigma_{\\text{annual}} = \\sigma_{\\text{daily}} \\times \\sqrt{252}$$
+
+where $\\sigma_{\\text{daily}}$ is the standard deviation of daily log returns and 252 is
+the standard count of trading days in a year. Every answer also comes labelled with which
+tool was called, which documents were retrieved, and an EU AI Act risk tier, so you can see
+exactly where the answer came from.
+
+Go ahead and give it a try.
+        """
+    )
+
 st.markdown("---")
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
