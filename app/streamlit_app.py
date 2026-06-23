@@ -195,7 +195,8 @@ if df is not None:
                     for chunk in response["rag_chunks"]:
                         label = source_labels.get(chunk["source"], chunk["source"])
                         st.caption(f"**{label}** (score: {chunk['score']:.2f})")
-                        st.markdown(f"> {chunk['text'][:400]}{'...' if len(chunk['text']) > 400 else ''}")
+                        excerpt = chunk["text"][:400]
+                        st.text(excerpt + ("..." if len(chunk["text"]) > 400 else ""))
 
             if response.get("error"):
                 st.error(f"Agent error: {response['error']}")

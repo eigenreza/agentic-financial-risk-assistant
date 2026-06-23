@@ -95,7 +95,13 @@ def _build_agent():
 
     tools = get_all_tools()
     agent = create_tool_calling_agent(llm, tools, prompt)
-    return AgentExecutor(agent=agent, tools=tools, verbose=True, max_iterations=5)
+    return AgentExecutor(
+        agent=agent,
+        tools=tools,
+        verbose=True,
+        max_iterations=5,
+        return_intermediate_steps=True,
+    )
 
 
 def run_agent(
