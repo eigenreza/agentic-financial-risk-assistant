@@ -31,6 +31,21 @@ st.set_page_config(
     layout="wide",
 )
 
+# Bump the base font size site-wide so body text, captions, and widget labels
+# all scale together instead of just the headings.
+st.markdown(
+    """
+    <style>
+    html, body, [class*="st-"], .stMarkdown, .stCaption, .stTextInput label,
+    .stExpander, p, li, span {
+        font-size: 1.15rem !important;
+        line-height: 1.6 !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 # ── Header ────────────────────────────────────────────────────────────────────
 st.title("📊 Agentic Financial Risk Assistant")
 st.markdown(
