@@ -49,6 +49,10 @@ st.markdown(
 # ── Header ────────────────────────────────────────────────────────────────────
 st.title("📊 Agentic Financial Risk Assistant")
 st.markdown(
+    "Built by **Reza Azad Gholami** &middot; "
+    "[GitHub repository](https://github.com/eigenreza/agentic-financial-risk-assistant)"
+)
+st.markdown(
     "> Uncertainty-aware financial risk analysis using controlled Python tools. "
     "Not investment advice."
 )
